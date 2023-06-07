@@ -1,9 +1,8 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable react/prop-types */
 
 import React, { useContext, useState, useEffect } from 'react';
 import { auth } from '../firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 const AuthContext = React.createContext();
 
@@ -23,7 +22,9 @@ export function AuthProvider({ children }) {
   function login(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
   }
-
+  function logout() {
+    return signOut(auth);
+  }
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -36,7 +37,8 @@ export function AuthProvider({ children }) {
   const value = {
     currentUser,
     signup,
-    login
+    login,
+    logout
   };
   return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 }
