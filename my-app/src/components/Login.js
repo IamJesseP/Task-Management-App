@@ -1,15 +1,16 @@
 import React, { useRef, useState } from 'react';
 import { Form, Button, Card, Alert } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login() {
   // useRef is used to access the value of the input fields without constant re-renders
   const emailRef = useRef();
   const passwordRef = useRef();
+  const navigate = useNavigate();
 
   // eslint-disable-next-line no-unused-vars
-  const { signup, currentUser } = useAuth();
+  const { login, currentUser } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -19,9 +20,10 @@ export default function Login() {
     try {
       setError('');
       setLoading(true);
-      await signup(emailRef.current.value, passwordRef.current.value);
+      await login(emailRef.current.value, passwordRef.current.value);
+      navigate('/');
     } catch (error) {
-      setError('Failed to create an account');
+      setError('Failed to log in');
       console.log(error);
     }
 
@@ -50,7 +52,7 @@ export default function Login() {
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
-        Need an account?? <Link to="/signup">Sign Up</Link>
+        Need an account? <Link to="/signup">Sign Up</Link>
       </div>
     </>
   );

@@ -1,13 +1,14 @@
 import React, { useRef, useState } from 'react';
 import { Form, Button, Card, Alert } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Signup() {
   // useRef is used to access the value of the input fields without constant re-renders
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
+  const navigate = useNavigate();
 
   // eslint-disable-next-line no-unused-vars
   const { signup, currentUser } = useAuth();
@@ -28,6 +29,7 @@ export default function Signup() {
       setError('');
       setLoading(true);
       await signup(emailRef.current.value, passwordRef.current.value);
+      navigate('/');
     } catch (error) {
       setError('Failed to create an account');
       console.log(error);
