@@ -3,18 +3,25 @@ import { Form, Button, Card, Alert } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 
 export default function Signup() {
+  // useRef is used to access the value of the input fields without constant re-renders
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const { signup } = useAuth();
+
+  const { signup, currentUser } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
+    // Validators
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError('Passwords do not match');
     }
+    if (passwordRef.current.value.length < 6) {
+      return setError('Password must be at least 6 characters');
+    }
+    // Try to create an account
     try {
       setError('');
       setLoading(true);
@@ -32,6 +39,7 @@ export default function Signup() {
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Sign Up</h2>
+          {currentUser && currentUser.email}
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
