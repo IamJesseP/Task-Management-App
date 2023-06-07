@@ -8,6 +8,7 @@ export default function Signup() {
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
 
+  // eslint-disable-next-line no-unused-vars
   const { signup, currentUser } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -59,9 +60,7 @@ export default function Signup() {
           </Form>
         </Card.Body>
       </Card>
-      <div className="w-100 text-center mt-2">
-        Already have an account? Log In
-      </div>
+      <div className="w-100 text-center mt-2">Already have an account? Log In</div>
     </>
   );
 }
