@@ -28,7 +28,18 @@ const createTask = async (req, res) => {
 }
 
 const getAllTasks = async (req, res) => {
-    res.send('get all tasks route')
+    const taskCollection = db.collection('tasks')
+    const snapshot = await taskCollection.get()
+    if (snapshot.empty){
+        throw new CustomError.NotFoundError('No tasks found')
+    }
+    let tasks = []
+    snapshot.forEach(doc =>{
+        let id = doc.id
+        let data = doc.data()
+        tasks.push({id, ...data})
+    })
+    res.status(StatusCodes.OK).json(tasks)
 }
 
 const getCurrentUserTasks = async (req, res) => {
