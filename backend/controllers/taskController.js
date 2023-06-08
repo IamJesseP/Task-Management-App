@@ -24,7 +24,7 @@ const createTask = async (req, res) => {
         await db.collection('tasks').add(newTask);
     } catch (error) {
         return res.status(StatusCodes.BAD_REQUEST).json({
-            error: 'Missing required fields',
+            error: 'Error creating task',
         });
     }
     res.status(StatusCodes.CREATED).json({ msg: 'Successfuly created task' });
@@ -36,7 +36,7 @@ const getAllTasks = async (req, res) => {
     if (snapshot.empty) {
         return res
             .status(StatusCodes.NOT_FOUND)
-            .json({ error: 'Task not found' });
+            .json({ error: 'Tasks not found' });
     }
     const tasks = [];
     snapshot.forEach((doc) => {
