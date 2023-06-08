@@ -24,7 +24,7 @@ const createTask = async (req, res) => {
         await db.collection('tasks').add(newTask);
     } catch (error) {
         return res.status(StatusCodes.BAD_REQUEST).json({
-            error: 'Error creating task',
+            error: 'Failed to create task',
         });
     }
     res.status(StatusCodes.CREATED).json({ msg: 'Successfuly created task' });
