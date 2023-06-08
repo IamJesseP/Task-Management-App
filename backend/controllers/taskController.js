@@ -24,7 +24,7 @@ const createTask = async (req, res) => {
         await db.collection('tasks').add(newTask);
     } catch (error) {
         return res.status(StatusCodes.BAD_REQUEST).json({
-            error: 'Missing required fields',
+            error: 'Failed to create task',
         });
     }
     res.status(StatusCodes.CREATED).json({ msg: 'Successfuly created task' });
