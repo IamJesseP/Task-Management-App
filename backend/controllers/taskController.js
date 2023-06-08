@@ -1,63 +1,67 @@
 const admin = require('firebase-admin');
 const { StatusCodes } = require('http-status-codes');
-const db = admin.firestore();
-const CustomError = require('../errors');
-require('http-status-codes')
 
+const db = admin.firestore();
+require('http-status-codes');
 
 const createTask = async (req, res) => {
-    const {title, description, company} = req.body
-    if (!title || !description || !company){
-        throw new CustomError.BadRequestError('Please provide all values')
+    const { title, description, company } = req.body;
+    if (!title || !description || !company) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            error: 'Missing required fields',
+        });
     }
     const newTask = {
         title,
         description,
         company,
         student: null,
-        status: "open",
+        status: 'open',
         dateCreated: admin.firestore.FieldValue.serverTimestamp(),
-        dateCompleted: null
+        dateCompleted: null,
     };
     try {
-         await db.collection('tasks').add(newTask);
+        await db.collection('tasks').add(newTask);
     } catch (error) {
-        throw new CustomError.BadRequestError(`Error: ${error}`)
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            error: 'Missing required fields',
+        });
     }
-    res.status(StatusCodes.CREATED).json({msg: "Successfuly created task"})
-}
+    res.status(StatusCodes.CREATED).json({ msg: 'Successfuly created task' });
+};
 
 const getAllTasks = async (req, res) => {
-    const taskCollection = db.collection('tasks')
-    const snapshot = await taskCollection.get()
-    if (snapshot.empty){
-        throw new CustomError.NotFoundError('No tasks found')
+    const taskCollection = db.collection('tasks');
+    const snapshot = await taskCollection.get();
+    if (snapshot.empty) {
+        return res
+            .status(StatusCodes.NOT_FOUND)
+            .json({ error: 'Task not found' });
     }
-    let tasks = []
-    snapshot.forEach(doc =>{
-        let id = doc.id
-        let data = doc.data()
-        tasks.push({id, ...data})
-    })
-    res.status(StatusCodes.OK).json(tasks)
-}
+    const tasks = [];
+    snapshot.forEach((doc) => {
+        const { id } = doc;
+        const data = doc.data();
+        tasks.push({ id, ...data });
+    });
+    res.status(StatusCodes.OK).json(tasks);
+};
 
 const getCurrentUserTasks = async (req, res) => {
-    res.send('get current user tasks route')
-}
+    res.send('get current user tasks route');
+};
 
 const updateTask = async (req, res) => {
-    res.send('update task route')
-}
+    res.send('update task route');
+};
 
 const getSingleTask = async (req, res) => {
-    res.send('get single task route')
-}
+    res.send('get single task route');
+};
 
 const deleteTask = async (req, res) => {
-    res.send('delete task route')
-}
-
+    res.send('delete task route');
+};
 
 module.exports = {
     createTask,
@@ -65,5 +69,5 @@ module.exports = {
     getCurrentUserTasks,
     updateTask,
     getSingleTask,
-    deleteTask
-}
+    deleteTask,
+};
