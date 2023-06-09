@@ -42,6 +42,7 @@ export default function Dashboard() {
       <div className="container">
         <h2 className="text-center mb-4">Task Manager</h2>
         <Navibar className="navbar" />
+
         <Card>
           <Card.Body>
             <ListGroup variant="flush">
@@ -69,14 +70,16 @@ export default function Dashboard() {
             Update profile
           </Link>
         </Card.Body>
+<<<<<<< HEAD
       </Card>
       <div className="w-100 text-center mt-2">
         <Button variant="link" onClick={handleLogout}>
           Log out
         </Button>
+<<<<<<< HEAD
       </div> 
       </Card> 
-    */}
+    </Card> */}
     </>
   );
 }
