@@ -30,8 +30,14 @@ export default function Login() {
   }
 
   return (
-    <>
-      <Card>
+    <div
+      className="d-flex align-items-center justify-content-center"
+      style={{
+        minHeight: '100vh'
+      }}>
+      <Card
+        className="d-flex align-items-center justify-content-center"
+        style={{ minHeight: '20vh', margin: 'auto', maxWidth: '400px' }}>
         <Card.Body>
           <h2 className="text-center mb-4">Log In</h2>
           {error && <Alert variant="danger">{error}</Alert>}
@@ -52,10 +58,10 @@ export default function Login() {
             <Link to="/forgot-password">Forgot Password?</Link>
           </div>
         </Card.Body>
+        <div className="text-center d-flex" style={{ marginBottom: '-32px' }}>
+          Need an account? <Link to="/signup">Sign Up</Link>
+        </div>
       </Card>
-      <div className="w-100 text-center mt-2">
-        Need an account? <Link to="/signup">Sign Up</Link>
-      </div>
-    </>
+    </div>
   );
 }

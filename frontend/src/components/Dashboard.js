@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Alert, ListGroup } from 'react-bootstrap';
+=======
+import React, { useEffect, useState } from 'react';
+import { Card, Button, Alert } from 'react-bootstrap';
+>>>>>>> f2acea0fa02fd87f7c5cbd38e0044579fb91a26a
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
+import { auth } from '../firebase';
+import Navibar from './Navibar';
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -23,6 +30,7 @@ export default function Dashboard() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
+
   async function handleLogout() {
     setError('');
     try {
@@ -35,6 +43,7 @@ export default function Dashboard() {
   }
 
   return (
+<<<<<<< HEAD
     <>
       <div className="container">
         <h2 className="text-center mb-4">Task Manager</h2>
@@ -51,16 +60,23 @@ export default function Dashboard() {
           </Card.Body>
         </Card>
       </div>
+=======
+    <div>
+>>>>>>> f2acea0fa02fd87f7c5cbd38e0044579fb91a26a
       {/* <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Profile</h2>
           {error && <Alert variant="danger">{error}</Alert>}
-          <strong>Email:</strong>
+          <strong>Email: </strong>
           {currentUser.email}
+          <br />
+          <strong>User: </strong>
+          {currentUser.displayName}
           <Link to="/update-profile" className="btn btn-primary w-100">
             Update profile
           </Link>
         </Card.Body>
+<<<<<<< HEAD
       </Card>
       <div className="w-100 text-center mt-2">
         <Button variant="link" onClick={handleLogout}>
@@ -68,5 +84,10 @@ export default function Dashboard() {
         </Button>
       </div> */}
     </>
+=======
+      </Card> */}
+      <Navibar className="navbar" />
+    </div>
+>>>>>>> f2acea0fa02fd87f7c5cbd38e0044579fb91a26a
   );
 }
