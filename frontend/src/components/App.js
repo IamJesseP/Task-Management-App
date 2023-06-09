@@ -10,34 +10,24 @@ import ForgotPassword from './ForgotPassword';
 
 function App() {
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh'
-      }}>
-      <AuthProvider>
-        <Container>
-          <Router>
-            <AuthProvider>
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <PrivateRoute>
-                      <Dashboard />
-                    </PrivateRoute>
-                  }></Route>
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-              </Routes>
-            </AuthProvider>
-          </Router>
-        </Container>
-      </AuthProvider>
-    </div>
+    <AuthProvider>
+      <Router>
+        <AuthProvider>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <PrivateRoute>
+                  <Dashboard />
+                </PrivateRoute>
+              }></Route>
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+          </Routes>
+        </AuthProvider>
+      </Router>
+    </AuthProvider>
   );
 }
 

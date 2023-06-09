@@ -30,7 +30,11 @@ export default function ForgotPassword() {
   }
 
   return (
-    <>
+    <div
+      className="d-flex"
+      style={{
+        minHeight: '100vh'
+      }}>
       <Card
         className="d-flex align-items-center justify-content-center"
         style={{ minHeight: '20vh', margin: 'auto', maxWidth: '400px' }}>
@@ -52,10 +56,10 @@ export default function ForgotPassword() {
             <Link to="/login">Log In</Link>
           </div>
         </Card.Body>
+        <div className="text-center mt-2" style={{ marginBottom: '-32px' }}>
+          Need an account? <Link to="/signup">Sign Up</Link>
+        </div>
       </Card>
-      <div className="w-100 text-center mt-2">
-        Need an account? <Link to="/signup">Sign Up</Link>
-      </div>
-    </>
+    </div>
   );
 }

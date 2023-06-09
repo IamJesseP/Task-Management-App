@@ -1,29 +1,46 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Nav, Navbar, Container, NavDropdown } from 'react-bootstrap';
+import { Nav, Navbar, Container, NavDropdown, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import '../style.css';
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 // switch hrefs with react router maybe?
 function Navibar() {
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const { currentUser, logout } = useAuth();
+
+  async function handleLogout() {
+    setError('');
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      setError('Failed to log out');
+      console.log(error);
+    }
+  }
   return (
-    <div className="w-100" style={{ maxWidth: '400px' }}>
-      <Navbar bg="white" expand="md">
-        <Container>
-          <Navbar.Brand href="#home">Tasks!</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#link">Link</Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Dropdown Item 1</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Dropdown Item 2</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Dropdown Item 3</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">Another Item</NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-    </div>
+    <Navbar bg="white" expand="md" className="w-100">
+      <Container>
+        <Navbar.Brand href="/" style={{ float: 'left' }}>
+          Dashboard
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link href="#home">Marketplace</Nav.Link>
+            <Nav.Link href="#link">My Tasks</Nav.Link>
+            <NavDropdown title="Profile" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Settings</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={handleLogout}>Log out</NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }
 export default Navibar;

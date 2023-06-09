@@ -47,13 +47,17 @@ export default function Signup() {
   }
 
   return (
-    <>
+    <div
+      className="d-flex"
+      style={{
+        minHeight: '100vh'
+      }}>
       {
-        //not completely response
+        //not completely responsive
       }
       <Card
         className="d-flex align-items-center justify-content-center"
-        style={{ minHeight: '40vh', margin: 'auto', maxWidth: '400px' }}>
+        style={{ minHeight: '20vh', margin: 'auto', maxWidth: '400px' }}>
         <Card.Body>
           <h2 className="text-center mb-4">Sign Up</h2>
           {error && <Alert variant="danger">{error}</Alert>}
@@ -74,15 +78,15 @@ export default function Signup() {
               <Form.Label>Password Confirmation</Form.Label>
               <Form.Control type="password" ref={passwordConfirmRef} required />
             </Form.Group>
-            <Button disabled={loading} className="w-100 mt-4" type="submit">
+            <Button disabled={loading} className="w-100 mt-4 mb-4" type="submit">
               Sign Up
             </Button>
           </Form>
         </Card.Body>
+        <div className=" text-center d-flex" style={{ marginBottom: '-32px' }}>
+          Already have an account? <Link to="/login">Log In</Link>
+        </div>
       </Card>
-      <div className="w-100 text-center mt-2">
-        Already have an account? <Link to="/login">Log In</Link>
-      </div>
-    </>
+    </div>
   );
 }
