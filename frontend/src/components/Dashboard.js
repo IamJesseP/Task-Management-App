@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Button, Alert } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
+import { auth } from '../firebase';
 
 export default function Dashboard() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
+
   async function handleLogout() {
     setError('');
     try {
@@ -24,8 +26,11 @@ export default function Dashboard() {
         <Card.Body>
           <h2 className="text-center mb-4">Profile</h2>
           {error && <Alert variant="danger">{error}</Alert>}
-          <strong>Email:</strong>
+          <strong>Email: </strong>
           {currentUser.email}
+          <br />
+          <strong>User: </strong>
+          {currentUser.displayName}
           <Link to="/update-profile" className="btn btn-primary w-100">
             Update profile
           </Link>
