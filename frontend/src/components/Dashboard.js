@@ -21,7 +21,6 @@ export default function Dashboard() {
     }
   };
 
-  //changes above
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
@@ -70,13 +69,11 @@ export default function Dashboard() {
             Update profile
           </Link>
         </Card.Body>
-<<<<<<< HEAD
       </Card>
       <div className="w-100 text-center mt-2">
         <Button variant="link" onClick={handleLogout}>
           Log out
         </Button>
-<<<<<<< HEAD
       </div> 
       </Card> 
     </Card> */}

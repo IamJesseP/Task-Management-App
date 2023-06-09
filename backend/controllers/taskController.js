@@ -1,6 +1,7 @@
-auth = require('firebase-admin');
+const admin = require('firebase-admin');
+const { StatusCodes } = require('http-status-codes');
 
-const db = firestore();
+const db = admin.firestore();
 
 const createTask = async (req, res) => {
   const { title, description, company } = req.body;
@@ -15,7 +16,7 @@ const createTask = async (req, res) => {
     company,
     student: null,
     status: 'open',
-    dateCreated: auth.admin.firestore.FieldValue.serverTimestamp(),
+    dateCreated: admin.firestore.FieldValue.serverTimestamp(),
     dateCompleted: null,
   };
   try {

@@ -52,9 +52,6 @@ export default function Signup() {
       style={{
         minHeight: '100vh'
       }}>
-      {
-        //not completely responsive
-      }
       <Card
         className="d-flex align-items-center justify-content-center"
         style={{ minHeight: '20vh', margin: 'auto', maxWidth: '400px' }}>
