@@ -17,6 +17,11 @@ export default function Signup() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const [isChecked, setIsChecked] = useState(false);
+  const handleSwitch = (e) => {
+    setIsChecked(e.target.checked);
+  };
+
   async function handleSubmit(e) {
     e.preventDefault();
     // Validators
@@ -33,9 +38,14 @@ export default function Signup() {
       // Try to create an account, pull credential
       const userCredential = await signup(emailRef.current.value, passwordRef.current.value);
       const user = userCredential.user;
-      // Add userName to account
+      // Add user type to start of userName
+      let userName = isChecked
+        ? 'student.' + userNameRef.current.value
+        : 'company.' + userNameRef.current.value;
+      // Add username to account
+      console.log(userName);
       await updateProfile(user, {
-        displayName: userNameRef.current.value
+        displayName: userName
       });
       navigate('/');
     } catch (error) {
@@ -59,8 +69,15 @@ export default function Signup() {
           <h2 className="text-center mb-4">Sign Up</h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
+            <Form.Check // prettier-ignore
+              type="switch"
+              id="custom-switch"
+              label=""
+              checked={isChecked}
+              onChange={handleSwitch}
+            />
             <Form.Group id="userName">
-              <Form.Label>Username</Form.Label>
+              <Form.Label>{isChecked ? 'Student Name' : 'Company Name'}</Form.Label>
               <Form.Control type="text" ref={userNameRef} required />
             </Form.Group>
             <Form.Group id="email">
