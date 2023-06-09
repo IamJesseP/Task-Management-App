@@ -11,7 +11,7 @@ const {
   deleteTask,
 } = require('../controllers/taskController');
 
-router.get('/', requireFirebaseToken, getAllTasks);
+router.get('/', getAllTasks);
 router.post('/', requireFirebaseToken, createTask);
 router.get('/showMyTasks', getCurrentUserTasks);
 router.patch('/:id', updateTask);

@@ -37,9 +37,9 @@ const getAllTasks = async (req, res) => {
   }
   const tasks = [];
   snapshot.forEach((doc) => {
-    const { id } = doc;
-    const data = doc.data();
-    tasks.push({ id, ...data });
+    const task = doc.data();
+    task.id = doc.id;
+    tasks.push(task);
   });
   res.status(StatusCodes.OK).json(tasks);
 };

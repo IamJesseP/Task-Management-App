@@ -15,6 +15,7 @@ export default function Dashboard() {
     try {
       const response = await fetch('http://localhost:5000/dashboard/tasks');
       const data = await response.json();
+      console.log(data);
       setTasks(data);
     } catch (error) {
       console.error('Error fetching tasks:', error);
