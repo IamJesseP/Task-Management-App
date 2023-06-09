@@ -1,0 +1,17 @@
+html, body, #root, .container {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    float: left;
+    width: 100%;
+    height: 60px; 
+    background-color: #333; 
+    z-index: 100; /* this ensures the navbar always stays on top of other content */
+  }
+  
