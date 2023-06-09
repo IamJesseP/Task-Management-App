@@ -31,7 +31,9 @@ export default function Login() {
 
   return (
     <>
-      <Card>
+      <Card
+        className="d-flex align-items-center justify-content-center"
+        style={{ minHeight: '20vh', margin: 'auto', maxWidth: '400px' }}>
         <Card.Body>
           <h2 className="text-center mb-4">Log In</h2>
           {error && <Alert variant="danger">{error}</Alert>}

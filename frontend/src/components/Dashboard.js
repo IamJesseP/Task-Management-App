@@ -3,6 +3,7 @@ import { Card, Button, Alert } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
+import Navibar from './Navibar';
 
 export default function Dashboard() {
   const [error, setError] = useState('');
@@ -22,7 +23,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Card>
+      {/* <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Profile</h2>
           {error && <Alert variant="danger">{error}</Alert>}
@@ -35,7 +36,8 @@ export default function Dashboard() {
             Update profile
           </Link>
         </Card.Body>
-      </Card>
+      </Card> */}
+      <Navibar />
       <div className="w-100 text-center mt-2">
         <Button variant="link" onClick={handleLogout}>
           Log out

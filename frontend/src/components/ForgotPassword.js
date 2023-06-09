@@ -31,7 +31,9 @@ export default function ForgotPassword() {
 
   return (
     <>
-      <Card>
+      <Card
+        className="d-flex align-items-center justify-content-center"
+        style={{ minHeight: '20vh', margin: 'auto', maxWidth: '400px' }}>
         <Card.Body>
           <h2 className="text-center mb-4">Password Reset</h2>
           {message && <Alert variant="success">{message}</Alert>}

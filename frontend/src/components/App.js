@@ -10,11 +10,15 @@ import ForgotPassword from './ForgotPassword';
 
 function App() {
   return (
-    <AuthProvider>
-      <Container
-        className="d-flex align-items-center justify-content-center"
-        style={{ minHeight: '100vh' }}>
-        <div className="w-100" style={{ maxWidth: '400px' }}>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh'
+      }}>
+      <AuthProvider>
+        <Container>
           <Router>
             <AuthProvider>
               <Routes>
@@ -31,9 +35,9 @@ function App() {
               </Routes>
             </AuthProvider>
           </Router>
-        </div>
-      </Container>
-    </AuthProvider>
+        </Container>
+      </AuthProvider>
+    </div>
   );
 }
 
