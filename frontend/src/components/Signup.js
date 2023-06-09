@@ -1,29 +1,24 @@
 import React, { useRef, useState } from 'react';
-import { Form, Button, Card, Alert } from 'react-bootstrap';
+import { Form, Button, Card, Alert, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, updateProfile } from 'firebase/auth';
 
 export default function Signup() {
-  // useRef is used to access the value of the input fields without constant re-renders
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const userNameRef = useRef();
   const navigate = useNavigate();
-  // eslint-disable-next-line no-unused-vars
   const { signup, currentUser } = useAuth();
   const auth = getAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const [isChecked, setIsChecked] = useState(false);
-  const handleSwitch = (e) => {
-    setIsChecked(e.target.checked);
-  };
+  const [accountType, setAccountType] = useState('student'); // Default account type is student
 
   async function handleSubmit(e) {
     e.preventDefault();
+
     // Validators
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError('Passwords do not match');
@@ -35,18 +30,15 @@ export default function Signup() {
     try {
       setError('');
       setLoading(true);
-      // Try to create an account, pull credential
+
       const userCredential = await signup(emailRef.current.value, passwordRef.current.value);
       const user = userCredential.user;
-      // Add user type to start of userName
-      let userName = isChecked
-        ? 'student.' + userNameRef.current.value
-        : 'company.' + userNameRef.current.value;
-      // Add username to account
-      console.log(userName);
+
+      let userName = `${accountType}.${userNameRef.current.value}`;
       await updateProfile(user, {
         displayName: userName
       });
+
       navigate('/');
     } catch (error) {
       setError('Failed to create an account');
@@ -68,16 +60,28 @@ export default function Signup() {
         <Card.Body>
           <h2 className="text-center mb-4">Sign Up</h2>
           {error && <Alert variant="danger">{error}</Alert>}
+          <ToggleButtonGroup
+            className="mb-3 d-flex justify-content-center"
+            type="radio"
+            name="accountType"
+            value={accountType}
+            onChange={(value) => setAccountType(value)}>
+            <ToggleButton
+              variant={accountType === 'student' ? 'primary' : 'outline-primary'}
+              value="student"
+              onClick={() => setAccountType('student')}>
+              Student
+            </ToggleButton>
+            <ToggleButton
+              variant={accountType === 'company' ? 'primary' : 'outline-primary'}
+              value="company"
+              onClick={() => setAccountType('company')}>
+              Company
+            </ToggleButton>
+          </ToggleButtonGroup>
           <Form onSubmit={handleSubmit}>
-            <Form.Check // prettier-ignore
-              type="switch"
-              id="custom-switch"
-              label=""
-              checked={isChecked}
-              onChange={handleSwitch}
-            />
             <Form.Group id="userName">
-              <Form.Label>{isChecked ? 'Student Name' : 'Company Name'}</Form.Label>
+              <Form.Label>{accountType === 'student' ? 'Student Name' : 'Company Name'}</Form.Label>
               <Form.Control type="text" ref={userNameRef} required />
             </Form.Group>
             <Form.Group id="email">
