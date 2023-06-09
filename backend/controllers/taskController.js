@@ -1,8 +1,8 @@
-const admin = require('firebase-admin');
-const { StatusCodes } = require('http-status-codes');
+import { firestore } from 'firebase-admin';
+import { StatusCodes } from 'http-status-codes';
 
-const db = admin.firestore();
-require('http-status-codes');
+const db = firestore();
+import 'http-status-codes';
 
 const createTask = async (req, res) => {
     const { title, description, company } = req.body;
@@ -12,13 +12,13 @@ const createTask = async (req, res) => {
         });
     }
     const newTask = {
-        title,
-        description,
-        company,
-        student: null,
+        title: 'null title',
+        description: 'null description',
+        company: 'null company',
+        student: 'null student',
         status: 'open',
-        dateCreated: admin.firestore.FieldValue.serverTimestamp(),
-        dateCompleted: null,
+        dateCreated: firestore.FieldValue.serverTimestamp(),
+        dateCompleted: 'null date',
     };
     try {
         await db.collection('tasks').add(newTask);
@@ -63,7 +63,7 @@ const deleteTask = async (req, res) => {
     res.send('delete task route');
 };
 
-module.exports = {
+export default {
     createTask,
     getAllTasks,
     getCurrentUserTasks,

@@ -1,17 +1,17 @@
-const express = require('express');
-const cors = require('cors');
+import express, { json } from 'express';
+import cors from 'cors';
 
 const app = express();
-const admin = require('./db/firebaseAdmin');
+import admin from './db/firebaseAdmin';
 
 app.use(cors());
-app.use(express.json());
+app.use(json());
 
 app.get('/', (req, res) => {
     res.send('Hello, world!');
 });
 
-const taskRouter = require('./routes/taskRoutes');
+import taskRouter from './routes/taskRoutes';
 
 // endpoints
 app.use('/dashboard/tasks', taskRouter);
