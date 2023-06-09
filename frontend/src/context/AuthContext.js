@@ -17,6 +17,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
+  const [currentName, setCurrentName] = useState();
   // Firebase takes time to communicate with backend, user is null
   // loading tracks this period of comms
   const [loading, setLoading] = useState(true);
@@ -36,6 +37,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      setCurrentName(user.displayName ? user.displayName : user.email);
       setCurrentUser(user);
       //sets to false upon loading
       setLoading(false);
@@ -45,6 +47,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     currentUser,
+    currentName,
     signup,
     login,
     logout,
