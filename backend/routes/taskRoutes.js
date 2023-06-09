@@ -2,12 +2,12 @@ const express = require('express');
 
 const router = express.Router();
 const {
-    createTask,
-    getAllTasks,
-    getCurrentUserTasks,
-    updateTask,
-    getSingleTask,
-    deleteTask,
+  createTask,
+  getAllTasks,
+  getCurrentUserTasks,
+  updateTask,
+  getSingleTask,
+  deleteTask,
 } = require('../controllers/taskController');
 
 router.get('/', getAllTasks);
