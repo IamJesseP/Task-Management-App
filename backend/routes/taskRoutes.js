@@ -1,4 +1,5 @@
 const express = require('express');
+const requireFirebaseToken = require('../middleware/requireFirebaseToken');
 
 const router = express.Router();
 const {
@@ -10,8 +11,8 @@ const {
   deleteTask,
 } = require('../controllers/taskController');
 
-router.get('/', getAllTasks);
-router.post('/', createTask);
+router.get('/', requireFirebaseToken, getAllTasks);
+router.post('/', requireFirebaseToken, createTask);
 router.get('/showMyTasks', getCurrentUserTasks);
 router.patch('/:id', updateTask);
 router.get('/:id', getSingleTask);
