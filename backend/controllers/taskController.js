@@ -4,8 +4,9 @@ const { StatusCodes } = require('http-status-codes');
 const db = admin.firestore();
 
 const createTask = async (req, res) => {
-  const { title, description, company } = req.body;
-  if (!title || !description || !company) {
+  const { title, description } = req.body;
+  const displayName = req.user.name;
+  if (!title || !description || !displayName) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       error: 'Missing required fields',
     });
@@ -13,9 +14,9 @@ const createTask = async (req, res) => {
   const newTask = {
     title,
     description,
-    company,
-    student: null,
+    company: displayName.slice(8),
     status: 'open',
+    submissionCounter: 0,
     dateCreated: admin.firestore.FieldValue.serverTimestamp(),
     dateCompleted: null,
   };
@@ -48,9 +49,40 @@ const getCurrentUserTasks = async (req, res) => {
   res.send('get current user tasks route');
 };
 
-const updateTask = async (req, res) => {
-  res.send('update task route');
+const updateStudentTask = async (req, res) => {
+  // requires: displayName, taskId, isSubmitted, submissionCounter
+  const displayName = req.user.name;
+  const taskId = req.params.id;
+  const { isSubmitted } = req.body;
+  let { submissionCounter } = req.body;
+
+  if (!displayName || !taskId || !isSubmitted) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      error: 'Missing required fields',
+    });
+  }
+  if (displayName.startsWith('student')) {
+    try {
+      const taskRef = db.collection('tasks').doc(taskId);
+      await taskRef.update({
+        submissionCounter: isSubmitted
+          ? (submissionCounter += 1)
+          : submissionCounter,
+      });
+
+      const task = await taskRef.get();
+      if (!task.exists) {
+        return res.status(404).json({ error: 'Task not found' });
+      }
+
+      res.status(StatusCodes.OK).json({ ...task.data() });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to update task', msg: error });
+    }
+  }
 };
+
+const updateCompanyTask = async (req, res) => {};
 
 const getSingleTask = async (req, res) => {
   res.send('get single task route');
@@ -64,7 +96,8 @@ module.exports = {
   createTask,
   getAllTasks,
   getCurrentUserTasks,
-  updateTask,
+  updateStudentTask,
+  updateCompanyTask,
   getSingleTask,
   deleteTask,
 };
