@@ -15,8 +15,9 @@ const {
 router.get('/', requireFirebaseToken, getAllTasks);
 router.post('/', requireFirebaseToken, createTask);
 router.get('/showMyTasks', getCurrentUserTasks);
-router.patch('/:id', requireFirebaseToken, updateStudentTask);
-router.get('/:id', getSingleTask);
+router.patch('/studentUpdate/:id', requireFirebaseToken, updateStudentTask);
+router.patch('/companyUpdate/:id', requireFirebaseToken, updateCompanyTask);
+router.get('/companyUpdate/:id', getSingleTask);
 router.delete('/:id', deleteTask);
 
 module.exports = router;

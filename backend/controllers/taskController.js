@@ -106,7 +106,6 @@ const updateCompanyTask = async (req, res) => {
         description,
         status,
       });
-
       const task = await taskRef.get();
       if (!task.exists) {
         return res.status(404).json({ error: 'Task not found' });
