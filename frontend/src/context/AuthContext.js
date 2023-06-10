@@ -37,7 +37,9 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      setCurrentName(user.displayName ? user.displayName : user.email);
+      if (user) {
+        setCurrentName(user.displayName ? user.displayName : user.email);
+      }
       setCurrentUser(user);
       //sets to false upon loading
       setLoading(false);
