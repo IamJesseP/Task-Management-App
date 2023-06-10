@@ -77,12 +77,53 @@ const updateStudentTask = async (req, res) => {
 
       res.status(StatusCodes.OK).json({ ...task.data() });
     } catch (error) {
-      res.status(500).json({ error: 'Failed to update task', msg: error });
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: 'Failed to update task', msg: error });
     }
+  } else {
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ error: 'Failed to update task' });
   }
 };
 
-const updateCompanyTask = async (req, res) => {};
+const updateCompanyTask = async (req, res) => {
+  // requires: title, id, description, status
+  const displayName = req.user.name;
+  const taskId = req.params.id;
+  const { title, description, status } = req.body;
+  if (!title || !description || !status) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      error: 'Missing required fields',
+    });
+  }
+  if (displayName.startsWith('company')) {
+    try {
+      const taskRef = db.collection('tasks').doc(taskId);
+      await taskRef.update({
+        title,
+        description,
+        status,
+      });
+
+      const task = await taskRef.get();
+      if (!task.exists) {
+        return res.status(404).json({ error: 'Task not found' });
+      }
+
+      res.status(StatusCodes.OK).json({ ...task.data() });
+    } catch (error) {
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: 'Failed to update task', msg: error });
+    }
+  } else {
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ error: 'Failed to update task' });
+  }
+};
 
 const getSingleTask = async (req, res) => {
   res.send('get single task route');

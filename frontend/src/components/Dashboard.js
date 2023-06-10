@@ -48,11 +48,12 @@ export default function Dashboard() {
   }
 
   return (
-    <>
-      <div className="container">
-        <h2 className="text-center mb-4">Task Manager</h2>
-        <Navibar className="navbar" />
-      </div>
+    <div className='d-flex flex-column'>
+      <Navibar className="navbar" />
+      
+        <div className='d-flex align-items justify-content flex-column'>
+
+      <h2 className="text-center mb-4">Task Manager</h2>
       <div className="card-columns">
         {tasks.map((task) => (
           <Card key={task.id} className="bg-light mb-3">
@@ -65,29 +66,8 @@ export default function Dashboard() {
             </Card.Footer>
           </Card>
         ))}
+        </div>
       </div>
-
-      {/* <Card>
-        <Card.Body>
-          <h2 className="text-center mb-4">Profile</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
-          <strong>Email: </strong>
-          {currentUser.email}
-          <br />
-          <strong>User: </strong>
-          {currentUser.displayName}
-          <Link to="/update-profile" className="btn btn-primary w-100">
-            Update profile
-          </Link>
-        </Card.Body>
-      </Card>
-      <div className="w-100 text-center mt-2">
-        <Button variant="link" onClick={handleLogout}>
-          Log out
-        </Button>
-      </div> 
-      </Card> 
-    </Card> */}
-    </>
+    </div>
   );
 }

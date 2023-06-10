@@ -13,8 +13,11 @@ function Navibar() {
   const navigate = useNavigate();
   const { currentName, currentUser, logout } = useAuth();
   console.log(currentName);
-  const displayName = currentName.slice(8);
 
+  let displayName = currentName;
+  if (currentName.startsWith('student') || currentName.startsWith('company')) {
+    displayName = currentName.slice(8);
+  }
   async function handleLogout() {
     setError('');
     try {

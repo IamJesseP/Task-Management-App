@@ -6,7 +6,8 @@ html, body, #root, .container {
 }
 
 .navbar {
-    position: fixed;
+    display: flex;
+    position: sticky;
     top: 0;
     float: left;
     width: 100%;
@@ -16,17 +17,19 @@ html, body, #root, .container {
   }
   
   .container {
-    max-width: 800px; /* Adjust as needed */
+    max-width: 800px; 
     margin: 0 auto;
-    padding: 20px 40px;
+    /* padding: 20px 40px; */
   }
   
   .card-columns {
     margin: 2rem;
     display: grid;
+    position:static;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust as needed */
     grid-gap: 20px; /* Adjust as needed */
     justify-content: center;
+    width: 100%;
   }
   .card{
     max-width: 20rem;
