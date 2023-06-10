@@ -72,7 +72,9 @@ const updateStudentTask = async (req, res) => {
 
       const task = await taskRef.get();
       if (!task.exists) {
-        return res.status(404).json({ error: 'Task not found' });
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ error: 'Task not found' });
       }
 
       res.status(StatusCodes.OK).json({ ...task.data() });
@@ -108,7 +110,9 @@ const updateCompanyTask = async (req, res) => {
       });
       const task = await taskRef.get();
       if (!task.exists) {
-        return res.status(404).json({ error: 'Task not found' });
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ error: 'Task not found' });
       }
 
       res.status(StatusCodes.OK).json({ ...task.data() });
@@ -124,12 +128,32 @@ const updateCompanyTask = async (req, res) => {
   }
 };
 
-const getSingleTask = async (req, res) => {
-  res.send('get single task route');
-};
-
 const deleteTask = async (req, res) => {
-  res.send('delete task route');
+  const taskId = req.params.id;
+  if (!taskId) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ error: 'Missing required task ID' });
+  }
+
+  try {
+    const taskRef = db.collection('tasks').doc(taskId);
+    const doc = await taskRef.get();
+    if (!doc.exists) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: 'Task not found' });
+    }
+
+    await taskRef.delete();
+    res
+      .status(StatusCodes.OK)
+      .json({ message: `Task ${taskId} deleted successfully` });
+  } catch (err) {
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: 'Internal server error', msg: err });
+  }
 };
 
 module.exports = {
@@ -138,6 +162,5 @@ module.exports = {
   getCurrentUserTasks,
   updateStudentTask,
   updateCompanyTask,
-  getSingleTask,
   deleteTask,
 };
