@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Alert, ListGroup, Badge, Modal } from 'react-bootstrap';
+import { Card, Button, Alert, ListGroup, Badge, Modal, Form } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import '../style.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -12,22 +12,19 @@ export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const { currentUser, logout, currentName } = useAuth();
+  let token;
 
-  const handleOpenModal = (task) => {
-    setSelectedTask(task);
-    setModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
+  
   useEffect(() => {
     fetchTasks();
   }, []);
 
   const fetchTasks = async () => {
     try {
-      const token = await currentUser.getIdToken(true);
+      token = await currentUser.getIdToken(true);
       console.log(token)
       const response = await fetch('http://localhost:4000/dashboard/tasks', {
         method: 'GET',
@@ -44,21 +41,15 @@ export default function Dashboard() {
       console.error('Error fetching tasks:', error);
     }
   };
+  
+  const handleOpenModal = (task) => {
+    setSelectedTask(task);
+    setModalOpen(true);
+  };
 
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
-  const { currentUser, logout } = useAuth();
-
-  async function handleLogout() {
-    setError('');
-    try {
-      await logout();
-      navigate('/login');
-    } catch (error) {
-      setError('Failed to log out');
-      console.log(error);
-    }
-  }
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <div className='d-flex flex-column margin-1rem'>
@@ -95,6 +86,28 @@ function TaskCard({ task, handleOpenModal }) {
 }
 
 function TaskDetailModal({ task, show, onHide }) {
+  const [isEditOn, setIsEditOn] = useState(false)
+  const [check, setCheck] = useState()
+  const { currentUser, logout, currentName } = useAuth();
+  let displayName = currentName
+
+  function handleStatus(){
+    setCheck(!check)
+  }
+
+  function handleEdit(){
+    setIsEditOn(!isEditOn)
+    console.log(isEditOn)
+  }
+
+  function updateModalComponents(){
+    if (displayName.startsWith('student')){
+      handleStatus()
+    }
+    if(displayName.startsWith('company')){
+      handleEdit()
+    }
+  }
   return (
     <Modal
       show={show}
@@ -104,7 +117,7 @@ function TaskDetailModal({ task, show, onHide }) {
       className='pt-20px'
       centered
     >
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">Company: {task.company}</Modal.Title>
       </Modal.Header>
       <Modal.Header>
@@ -112,11 +125,16 @@ function TaskDetailModal({ task, show, onHide }) {
       </Modal.Header>
       <Modal.Body className='test'>
         <h6>{task.description}</h6>
-        <p>{/* Include additional details about the task here, if available */}</p>
+        <p>{task.status ? 'Open' : 'Closed'}</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant='success'>Edit</Button>
-        <Button onClick={onHide} variant='secondary'>Close</Button>
+      <Form.Check // prettier-ignore
+        type="check"
+        id="custom-switch"
+        label="Check this switch"
+      />
+        <Button variant='success' onClick={handleEdit}>Edit</Button>
+        <Button onClick={isEditOn ? handleEdit : onHide} variant={isEditOn ? 'success' : 'secondary'}>{isEditOn ? 'Submit': 'Close'}</Button>
       </Modal.Footer>
     </Modal>
   );
