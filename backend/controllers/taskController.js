@@ -4,8 +4,9 @@ const { StatusCodes } = require('http-status-codes');
 const db = admin.firestore();
 
 const createTask = async (req, res) => {
-  const { title, description, company } = req.body;
-  if (!title || !description || !company) {
+  const { title, description } = req.body;
+  const displayName = req.user.name;
+  if (!title || !description) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       error: 'Missing required fields',
     });
@@ -13,7 +14,7 @@ const createTask = async (req, res) => {
   const newTask = {
     title,
     description,
-    company,
+    company: displayName.slice(8),
     student: null,
     status: 'open',
     dateCreated: admin.firestore.FieldValue.serverTimestamp(),
