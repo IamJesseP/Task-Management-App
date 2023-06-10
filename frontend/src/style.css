@@ -7,30 +7,31 @@ html, body, #root, .container {
 
 .navbar {
     display: flex;
-    position: sticky;
-    top: 0;
     float: left;
     width: 100%;
     height: 60px; 
     background-color: #333; 
-    z-index: 100; /* this ensures the navbar always stays on top of other content */
+    z-index: 100;
   }
   
-  .container {
-    max-width: 800px; 
-    margin: 0 auto;
-    /* padding: 20px 40px; */
+  .container { 
+    margin: 10px;
+    padding: 20px 40px;
   }
   
   .card-columns {
     margin: 2rem;
     display: grid;
-    position:static;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust as needed */
-    grid-gap: 20px; /* Adjust as needed */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+    grid-gap: 1rem; 
     justify-content: center;
-    width: 100%;
   }
   .card{
-    max-width: 20rem;
+    border-radius: 30px;
+    background: #e0e0e0;
+    box-shadow:  3px 3px 5px #cacaca,
+             -3px -3px 5px #f6f6f6;
+  }
+  .card:hover{
+    transform: translateY(-7px);
   }

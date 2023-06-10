@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Alert, ListGroup } from 'react-bootstrap';
+import { Card, Button, Alert, ListGroup, Badge } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import '../style.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -27,6 +27,7 @@ export default function Dashboard() {
       const data = await response.json();
       console.log(data);
       setTasks(data);
+      console.log(tasks.status);
     } catch (error) {
       console.error('Error fetching tasks:', error);
     }
@@ -48,7 +49,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className='d-flex flex-column'>
+    <div className='d-flex flex-column margin-1rem'>
       <Navibar className="navbar" />
       
         <div className='d-flex align-items justify-content flex-column'>
@@ -62,7 +63,9 @@ export default function Dashboard() {
               <Card.Text>{task.description}</Card.Text>
             </Card.Body>
             <Card.Footer>
-              <small className="text-muted">Task ID: {task.id}</small>
+              <Badge bg={task.status ? 'success' : 'secondary'} className="ml-2">
+                {task.status ? 'Open' : 'Closed'}
+              </Badge>
             </Card.Footer>
           </Card>
         ))}
