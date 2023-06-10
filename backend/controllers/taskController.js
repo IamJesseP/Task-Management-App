@@ -15,7 +15,7 @@ const createTask = async (req, res) => {
     title,
     description,
     company: displayName.slice(8),
-    status: 'open',
+    status: false,
     submissionCounter: 0,
     dateCreated: admin.firestore.FieldValue.serverTimestamp(),
     dateCompleted: null,
@@ -130,7 +130,7 @@ const updateCompanyTask = async (req, res) => {
 
 const deleteTask = async (req, res) => {
   const displayName = req.user.name;
-  if (displayName.startsWith('company')) {
+  if (!displayName.startsWith('company')) {
     res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Unauthorized' });
   }
   const taskId = req.params.id;
