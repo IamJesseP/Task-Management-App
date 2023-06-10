@@ -15,7 +15,6 @@ const createTask = async (req, res) => {
     title,
     description,
     company: displayName.slice(8),
-    student: null,
     status: 'open',
     submissionCounter: 0,
     dateCreated: admin.firestore.FieldValue.serverTimestamp(),
@@ -66,13 +65,12 @@ const updateStudentTask = async (req, res) => {
     try {
       const taskRef = db.collection('tasks').doc(taskId);
       await taskRef.update({
-        student: displayName.slice(8),
         submissionCounter: isSubmitted
           ? (submissionCounter += 1)
           : submissionCounter,
       });
-      const task = await taskRef.get();
 
+      const task = await taskRef.get();
       if (!task.exists) {
         return res.status(404).json({ error: 'Task not found' });
       }
