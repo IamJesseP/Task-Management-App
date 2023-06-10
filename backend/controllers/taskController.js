@@ -129,6 +129,10 @@ const updateCompanyTask = async (req, res) => {
 };
 
 const deleteTask = async (req, res) => {
+  const displayName = req.user.name;
+  if (displayName.startsWith('company')) {
+    res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Unauthorized' });
+  }
   const taskId = req.params.id;
   if (!taskId) {
     return res
