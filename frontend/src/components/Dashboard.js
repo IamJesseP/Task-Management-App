@@ -1,15 +1,26 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Alert, ListGroup, Badge } from 'react-bootstrap';
+import { Card, Button, Alert, ListGroup, Badge, Modal } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import '../style.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import Navibar from './Navibar';
-import TaskCard from './TaskCard';
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+
+  const handleOpenModal = (task) => {
+    setSelectedTask(task);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
   useEffect(() => {
     fetchTasks();
   }, []);
@@ -55,12 +66,53 @@ export default function Dashboard() {
       <div className='d-flex align-items justify-content flex-column'>
       <h2 className="text-center mb-4">Task Manager</h2>
       <div className="card-columns">
-        
       {tasks.map((task) => (
-        <TaskCard key={task.id} task={task} />
+        <TaskCard key={task.id} task={task} handleOpenModal={handleOpenModal} />
         ))}
+        {isModalOpen && selectedTask && (
+        <TaskDetailModal task={selectedTask} show={isModalOpen} onHide={handleCloseModal} />
+      )}
         </div>
       </div>
     </div>
+  );
+}
+
+function TaskCard({ task, handleOpenModal }) {
+  return (
+    <Card className="bg-light mb-3" onClick={() => handleOpenModal(task)}>
+      <Card.Header>{task.title}</Card.Header>
+      <Card.Body>
+        <Card.Text>{task.description}</Card.Text>
+      </Card.Body>
+      <Card.Footer>
+        <Badge bg={task.status ? 'success' : 'secondary'} className="ml-2">
+          {task.status ? 'Open' : 'Closed'}
+        </Badge>
+      </Card.Footer>
+    </Card>
+  );
+}
+
+function TaskDetailModal({ task, show, onHide }) {
+  return (
+    <Modal
+      show={show}
+      onHide={onHide}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">{task.title}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <h4>{task.description}</h4>
+        <p>{/* Include additional details about the task here, if available */}</p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
   );
 }
