@@ -28,9 +28,14 @@ html, body, #root, .container {
   }
   .card{
     background: #e0e0e0;
+    cursor: pointer;
     box-shadow:  3px 3px 5px #cacaca,
              -3px -3px 5px #f6f6f6;
   }
   .card:hover{
     transform: translateY(-7px);
+  }
+
+  .test {
+    height: 16rem;
   }

@@ -101,17 +101,22 @@ function TaskDetailModal({ task, show, onHide }) {
       onHide={onHide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
+      className='pt-20px'
       centered
     >
       <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">Company: {task.company}</Modal.Title>
+      </Modal.Header>
+      <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">{task.title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <h4>{task.description}</h4>
+      <Modal.Body className='test'>
+        <h6>{task.description}</h6>
         <p>{/* Include additional details about the task here, if available */}</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onHide}>Close</Button>
+        <Button variant='success'>Edit</Button>
+        <Button onClick={onHide} variant='secondary'>Close</Button>
       </Modal.Footer>
     </Modal>
   );
