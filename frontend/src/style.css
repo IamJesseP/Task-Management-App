@@ -15,3 +15,19 @@ html, body, #root, .container {
     z-index: 100; /* this ensures the navbar always stays on top of other content */
   }
   
+  .container {
+    max-width: 800px; /* Adjust as needed */
+    margin: 0 auto;
+    padding: 20px 40px;
+  }
+  
+  .card-columns {
+    margin: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust as needed */
+    grid-gap: 20px; /* Adjust as needed */
+    justify-content: center;
+  }
+  .card{
+    max-width: 20rem;
+  }

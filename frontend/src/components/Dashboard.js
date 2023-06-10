@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Alert, ListGroup } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
+import '../style.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import Navibar from './Navibar';
@@ -42,19 +43,19 @@ export default function Dashboard() {
       <div className="container">
         <h2 className="text-center mb-4">Task Manager</h2>
         <Navibar className="navbar" />
-
-        <Card>
-          <Card.Body>
-            <ListGroup variant="flush">
-              {tasks.map((task) => (
-                <ListGroup.Item key={task.id}>
-                  <h5>{task.title}</h5>
-                  <p>{task.description}</p>
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          </Card.Body>
-        </Card>
+      </div>
+      <div className="card-columns">
+        {tasks.map((task) => (
+          <Card key={task.id} className="bg-light mb-3">
+            <Card.Header>{task.title}</Card.Header>
+            <Card.Body>
+              <Card.Text>{task.description}</Card.Text>
+            </Card.Body>
+            <Card.Footer>
+              <small className="text-muted">Task ID: {task.id}</small>
+            </Card.Footer>
+          </Card>
+        ))}
       </div>
 
       {/* <Card>
