@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Alert, ListGroup } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
@@ -13,7 +14,14 @@ export default function Dashboard() {
 
   const fetchTasks = async () => {
     try {
-      const response = await fetch('http://localhost:4000/dashboard/tasks');
+      const token = await currentUser.getIdToken(true);
+      const response = await fetch('http://localhost:4000/dashboard/tasks', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
       const data = await response.json();
       console.log(data);
       setTasks(data);
