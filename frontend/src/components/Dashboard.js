@@ -87,12 +87,14 @@ function TaskCard({ task, handleOpenModal }) {
 
 function TaskDetailModal({ task, show, onHide }) {
   const [isEditOn, setIsEditOn] = useState(false)
-  const [check, setCheck] = useState()
+  const [check, setCheck] = useState(task.status ? true : false)
+  const [userType, setUserType] = useState('')
   const { currentUser, logout, currentName } = useAuth();
   let displayName = currentName
 
   function handleStatus(){
     setCheck(!check)
+    console.log(check)
   }
 
   function handleEdit(){
@@ -102,12 +104,17 @@ function TaskDetailModal({ task, show, onHide }) {
 
   function updateModalComponents(){
     if (displayName.startsWith('student')){
+      setUserType('student')
       handleStatus()
     }
     if(displayName.startsWith('company')){
+      setUserType('company')
       handleEdit()
     }
   }
+
+  useEffect(()=>updateModalComponents(), [])
+
   return (
     <Modal
       show={show}
@@ -115,9 +122,10 @@ function TaskDetailModal({ task, show, onHide }) {
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       className='pt-20px'
+      backdrop='static'
       centered
     >
-      <Modal.Header>
+      <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">Company: {task.company}</Modal.Title>
       </Modal.Header>
       <Modal.Header>
@@ -128,12 +136,14 @@ function TaskDetailModal({ task, show, onHide }) {
         <p>{task.status ? 'Open' : 'Closed'}</p>
       </Modal.Body>
       <Modal.Footer>
-      <Form.Check // prettier-ignore
-        type="check"
+      <Form.Check 
+        type="checkbox"
         id="custom-switch"
-        label="Check this switch"
+        label="Mark Complete"
+        onChange={handleStatus}
+        checked = {task.status}
       />
-        <Button variant='success' onClick={handleEdit}>Edit</Button>
+        {userType === 'company' && <Button variant='success' onClick={handleEdit}>Edit</Button>}
         <Button onClick={isEditOn ? handleEdit : onHide} variant={isEditOn ? 'success' : 'secondary'}>{isEditOn ? 'Submit': 'Close'}</Button>
       </Modal.Footer>
     </Modal>
