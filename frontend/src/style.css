@@ -27,7 +27,6 @@ html, body, #root, .container {
     justify-content: center;
   }
   .card{
-    border-radius: 30px;
     background: #e0e0e0;
     box-shadow:  3px 3px 5px #cacaca,
              -3px -3px 5px #f6f6f6;

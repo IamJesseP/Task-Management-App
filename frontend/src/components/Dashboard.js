@@ -6,6 +6,7 @@ import '../style.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import Navibar from './Navibar';
+import TaskCard from './TaskCard';
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -51,23 +52,12 @@ export default function Dashboard() {
   return (
     <div className='d-flex flex-column margin-1rem'>
       <Navibar className="navbar" />
-      
-        <div className='d-flex align-items justify-content flex-column'>
-
+      <div className='d-flex align-items justify-content flex-column'>
       <h2 className="text-center mb-4">Task Manager</h2>
       <div className="card-columns">
-        {tasks.map((task) => (
-          <Card key={task.id} className="bg-light mb-3">
-            <Card.Header>{task.title}</Card.Header>
-            <Card.Body>
-              <Card.Text>{task.description}</Card.Text>
-            </Card.Body>
-            <Card.Footer>
-              <Badge bg={task.status ? 'success' : 'secondary'} className="ml-2">
-                {task.status ? 'Open' : 'Closed'}
-              </Badge>
-            </Card.Footer>
-          </Card>
+        
+      {tasks.map((task) => (
+        <TaskCard key={task.id} task={task} />
         ))}
         </div>
       </div>
