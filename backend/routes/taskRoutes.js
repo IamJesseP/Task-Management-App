@@ -6,7 +6,8 @@ const {
   createTask,
   getAllTasks,
   getCurrentUserTasks,
-  updateTask,
+  updateStudentTask,
+  updateCompanyTask,
   getSingleTask,
   deleteTask,
 } = require('../controllers/taskController');
@@ -14,7 +15,7 @@ const {
 router.get('/', requireFirebaseToken, getAllTasks);
 router.post('/', requireFirebaseToken, createTask);
 router.get('/showMyTasks', getCurrentUserTasks);
-router.patch('/:id', updateTask);
+router.patch('/:id', requireFirebaseToken, updateStudentTask);
 router.get('/:id', getSingleTask);
 router.delete('/:id', deleteTask);
 
