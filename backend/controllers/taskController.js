@@ -16,7 +16,7 @@ const createTask = async (req, res) => {
     description,
     company: name.slice(8),
     status: false,
-    submissionCounter: 0,
+    submissionLink: null,
     dateCreated: admin.firestore.FieldValue.serverTimestamp(),
     dateCompleted: null,
     createdBy: name,
@@ -88,23 +88,24 @@ const getCurrentUserTasks = async (req, res) => {
 };
 
 const updateStudentTask = async (req, res) => {
-  // requires: displayName, taskId, isSubmitted, submissionCounter
+  // requires: displayName, taskId, isSubmitted, submissionFile
   const displayName = req.user.name;
   const taskId = req.params.id;
   const { isSubmitted } = req.body;
-  let { submissionCounter } = req.body;
+  let { submissionFile } = req.body;
   if (!displayName || !taskId) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       error: 'Missing required fields',
     });
   }
+  if (!submissionFile) {
+    submissionFile = null;
+  }
   if (displayName.startsWith('student')) {
     try {
       const taskRef = db.collection('tasks').doc(taskId);
       await taskRef.update({
-        submissionCounter: isSubmitted
-          ? (submissionCounter += 1)
-          : submissionCounter,
+        submissionLink: submissionFile,
         student: displayName.slice(8),
       });
 

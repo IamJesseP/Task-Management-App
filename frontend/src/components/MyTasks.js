@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable prettier/prettier */
+
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Badge, Modal,  Col,} from 'react-bootstrap';
+import { Card, Button, Badge, Modal, Col, Form, ModalFooter } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import '../style.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import Navibar from './Navibar';
 import TaskCreateModal from './TaskCreateModal';
+import { storage } from '../firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -17,63 +19,62 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const { currentUser, logout, currentName, userPhotoURL } = useAuth();
   let photoUrl = userPhotoURL;
- console.log(userPhotoURL);
-  
- 
- const fetchTasks = async () => {
-     try {
-         await currentUser.reload()
-         const token = await currentUser.getIdToken(true);
-         console.log(token)
-         const response = await fetch('http://localhost:4000/dashboard/tasks/showMyTasks', {
-             method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-    });
-    const data = await response.json();
-    console.log(data);
-    setTasks(data);
-    console.log(tasks.status);
-} catch (error) {
-    console.error('Error fetching tasks:', error);
-}
-};
+  console.log(userPhotoURL);
 
-useEffect(() => {
-  fetchTasks();
-}, []);
-
-const handleTaskUpdate = async (taskId, isSubmitted, submissionCounter) => {
+  const fetchTasks = async () => {
     try {
-      const token = await auth.currentUser.getIdToken(true); 
-      const response = await fetch(`http://localhost:4000/dashboard/tasks/studentUpdate/${taskId}`, {
-        method: 'PATCH',
+      await currentUser.reload();
+      const token = await currentUser.getIdToken(true);
+      console.log(token);
+      const response = await fetch('http://localhost:4000/dashboard/tasks/showMyTasks', {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          isSubmitted, // task.isSubmitted
-          submissionCounter, // return current task.submissionCounter
-        }),
+          Authorization: `Bearer ${token}`
+        }
       });
-      
+      const data = await response.json();
+      console.log(data);
+      setTasks(data);
+      console.log(tasks.status);
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+  const handleTaskUpdate = async (taskId, isSubmitted, submissionFile) => {
+    try {
+      const token = await auth.currentUser.getIdToken(true);
+      const response = await fetch(
+        `http://localhost:4000/dashboard/tasks/studentUpdate/${taskId}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            isSubmitted, // task.isSubmitted
+            submissionFile // return current task.submissionCounter
+          })
+        }
+      );
+
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-  
+
       await fetchTasks();
-      const updatedTask = await response.json()
+      const updatedTask = await response.json();
       return updatedTask;
-  
     } catch (error) {
       console.error('Error:', error);
     }
   };
-
-
 
   const handleOpenModal = (task) => {
     setSelectedTask(task);
@@ -88,19 +89,24 @@ const handleTaskUpdate = async (taskId, isSubmitted, submissionCounter) => {
     <div className="d-flex">
       <Navibar className="navbar" />
       <div className="content">
-        <div className='d-flex justify-content-center align-items-center flex-column'>
-            <h2 className="text-center mb-4">My Tasks</h2>
-            {currentName.startsWith('company') && <TaskCreateModal fetchTasks={fetchTasks}/>}
+        <div className="d-flex justify-content-center align-items-center flex-column">
+          <h2 className="text-center mb-4">My Tasks</h2>
+          {currentName.startsWith('company') && <TaskCreateModal fetchTasks={fetchTasks} />}
         </div>
         <div className="card-columns">
           {tasks.map((task) => (
-            <TaskCard key={task.id} task={task} handleOpenModal={handleOpenModal} profilePhoto={userPhotoURL} />
+            <TaskCard
+              key={task.id}
+              task={task}
+              handleOpenModal={handleOpenModal}
+              profilePhoto={userPhotoURL}
+            />
           ))}
           {isModalOpen && selectedTask && (
             <TaskDetailModal
               task={selectedTask}
               show={isModalOpen}
-              onProfileUpdate={handleTaskUpdate}
+              handleTaskUpdate={handleTaskUpdate}
               onHide={handleCloseModal}
             />
           )}
@@ -112,7 +118,10 @@ const handleTaskUpdate = async (taskId, isSubmitted, submissionCounter) => {
 
 function TaskCard({ task, handleOpenModal, profilePhoto }) {
   return (
-    <Card className="mb-3 card2" style={{ borderRadius: "20px" }} onClick={() => handleOpenModal(task)}>
+    <Card
+      className="mb-3 card2"
+      style={{ borderRadius: '20px' }}
+      onClick={() => handleOpenModal(task)}>
       <Card.Body>
         <Col>
           <span className="h6 font-semibold text-muted text-sm d-block mb-2">
@@ -120,14 +129,14 @@ function TaskCard({ task, handleOpenModal, profilePhoto }) {
           </span>
         </Col>
         <Col>
-          <span className="h6 font-semibold text-muted text-sm d-block mb-2">
-          {task.company}
-          </span>
+          <span className="h6 font-semibold text-muted text-sm d-block mb-2">{task.company}</span>
           <span className="h6 font-semibold mb-0">{task.title}</span>
         </Col>
         <Card.Text>{task.description}</Card.Text>
         <div className="mt-2 mb-0 text-sm">
-          <Badge bg={!task.status ? 'success' : 'secondary'} className="ml-2 rounded-pill bg-opacity-30">
+          <Badge
+            bg={!task.status ? 'success' : 'secondary'}
+            className="ml-2 rounded-pill bg-opacity-30">
             {!task.status ? 'Open' : 'Closed'}
           </Badge>
         </div>
@@ -141,43 +150,53 @@ function TaskCard({ task, handleOpenModal, profilePhoto }) {
   );
 }
 
-function TaskDetailModal({ task, show, onHide, onProfileUpdate }) {
-  const [isEditOn, setIsEditOn] = useState(false)
-  const [check, setCheck] = useState(task.status ? true : false)
-  const [userType, setUserType] = useState('')
-  const [taskClaimStatus, setTaskClaimStatus] = useState(task.student)
+function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
+  const [googleDocLink, setGoogleDocLink] = useState('');
+  const [isEditOn, setIsEditOn] = useState(false);
+  const [check, setCheck] = useState(task.status ? true : false);
+  const [userType, setUserType] = useState('');
+  const [taskClaimStatus, setTaskClaimStatus] = useState(task.student);
   const { currentUser, logout, currentName } = useAuth();
-  let displayName = currentName
-  
+  let displayName = currentName;
 
-  function handleStatus(){
-    setCheck(!check)
-    console.log(check)
+  function handleStatus() {
+    setCheck(!check);
+    console.log(check);
   }
 
-  function handleEdit(){
-    setIsEditOn(!isEditOn)
-    console.log(isEditOn)
+  function handleEdit() {
+    setIsEditOn(!isEditOn);
+    console.log(isEditOn);
   }
 
-  function updateModalComponents(){
-    if (displayName.startsWith('student')){
-      setUserType('student')
-     
+  function updateModalComponents() {
+    if (displayName.startsWith('student')) {
+      setUserType('student');
     }
-    if(displayName.startsWith('company')){
-      setUserType('company')
-      handleEdit()
+    if (displayName.startsWith('company')) {
+      setUserType('company');
+      handleEdit();
     }
   }
-  function handleClaim(){
 
-  }
-
-  const handleUpdateAndClose = async (taskId, isSubmitted, submissionCounter) => {
-    await onProfileUpdate(taskId, isSubmitted, submissionCounter)
+  const validateLink = (link) => {
+    const regex = /^https:\/\/docs\.google\.com\/.*\/d\/.+$/;
+    return regex.test(link);
   };
-  useEffect(()=>updateModalComponents(), [])
+
+  async function handleStudentSubmit(taskId, isSubmitted) {
+    let submissioStatus;
+    if (validateLink(googleDocLink)) {
+      const taskSubmissionRef = ref(storage, `taskSubmission/${currentUser.uid}`);
+      await uploadBytes(taskSubmissionRef, googleDocLink);
+      const submissionFile = await getDownloadURL(taskSubmissionRef);
+      await handleTaskUpdate(taskId, isSubmitted, submissionFile);
+    } else {
+      submissioStatus = `${(<p>invalid google doc file!</p>)}`;
+    }
+  }
+
+  useEffect(() => updateModalComponents(), []);
 
   return (
     <Modal
@@ -185,43 +204,34 @@ function TaskDetailModal({ task, show, onHide, onProfileUpdate }) {
       onHide={onHide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
-      className='pt-20px'
-      backdrop='static'
-      centered
-    >
+      className="pt-20px"
+      backdrop="static"
+      centered>
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">Company: {task.company}</Modal.Title>
       </Modal.Header>
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">{task.title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body className='test'>
+      <Modal.Body className="test">
         <h6>{task.description}</h6>
-        
-        
       </Modal.Body>
-      <Modal.Footer>
-    { task.student && <p>Being worked on by: {task.student }</p>}
-      {/* <Form.Check 
-        type="checkbox"
-        id="custom-switch"
-        label="Mark Complete"
-        onChange={handleStatus}
-        checked = {check}
-      />  lets move to myTasks for student*/}
-        {userType === 'student' && 
-        <Button 
-          variant='success' 
-          onClick={()=>{
-            handleUpdateAndClose(task.id, task.isSubmitted, task.submissionCounter)
-            setTaskClaimStatus(!taskClaimStatus)
-          }} 
-          disabled={taskClaimStatus}
-        >
-          {taskClaimStatus ? 'Claimed': 'Claim Task'}
-        </Button>}
-        <Button onClick={onHide} variant={'secondary'}>Close</Button>
-      </Modal.Footer>
+      <ModalFooter>
+        <Form.Group className="mb-3">
+          <Form.Label>Google Doc Link</Form.Label>
+          <Form.Control
+            type="text"
+            value={googleDocLink}
+            onChange={(event) => setGoogleDocLink(event.target.value)}
+            placeholder="Paste Google Doc link here"
+          />
+        </Form.Group>
+      </ModalFooter>
+      <ModalFooter>
+        <Button variant="primary" onClick={() => handleStudentSubmit(task.id, task.isSubmitted)}>
+          Submit
+        </Button>
+      </ModalFooter>
     </Modal>
   );
 }

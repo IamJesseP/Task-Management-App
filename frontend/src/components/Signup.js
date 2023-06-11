@@ -98,6 +98,7 @@ export default function Signup() {
                 type="file"
                 onChange={(e) => setProfilePicFile(e.target.files[0])}
                 accept="image/*"
+                required
               />
             </Form.Group>
             <Form.Group id="userName">
