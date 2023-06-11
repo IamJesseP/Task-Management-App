@@ -110,7 +110,7 @@ function TaskCard({ task, handleOpenModal, profilePhoto }) {
       <Card.Body>
         <Col>
           <span className="h6 font-semibold text-muted text-sm d-block mb-2">
-          
+            {task.displayPhoto && <img src={task.displayPhoto} width={'100px'}></img>}
           </span>
         </Col>
         <Col>

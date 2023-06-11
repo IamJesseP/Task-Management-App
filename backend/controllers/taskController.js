@@ -5,8 +5,8 @@ const db = admin.firestore();
 
 const createTask = async (req, res) => {
   const { title, description } = req.body;
-  const displayName = req.user.name;
-  if (!title || !description || !displayName) {
+  const { name, picture } = req.user;
+  if (!title || !description || !name || !picture) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       error: 'Missing required fields',
     });
@@ -14,14 +14,15 @@ const createTask = async (req, res) => {
   const newTask = {
     title,
     description,
-    company: displayName.slice(8),
+    company: name.slice(8),
     status: false,
     submissionCounter: 0,
     dateCreated: admin.firestore.FieldValue.serverTimestamp(),
     dateCompleted: null,
-    createdBy: displayName,
+    createdBy: name,
     isSubmitted: false,
     student: '',
+    displayPhoto: picture,
   };
   try {
     await db.collection('tasks').add(newTask);
