@@ -11,10 +11,12 @@ const auth = getAuth();
 function Navibar() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { currentName, currentUser, logout } = useAuth();
-  console.log(currentName);
+  const { currentName, currentUser, logout, userPhotoURL } = useAuth();
+  console.log(userPhotoURL);
+  console.log(currentUser);
 
   let displayName = currentName;
+  let photoUrl = userPhotoURL;
   if (currentName.startsWith('student') || currentName.startsWith('company')) {
     displayName = currentName.slice(8);
   }

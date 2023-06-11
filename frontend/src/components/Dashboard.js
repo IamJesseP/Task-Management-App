@@ -14,9 +14,9 @@ export default function Dashboard() {
   const [selectedTask, setSelectedTask] = useState(null);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { currentUser, logout, currentName } = useAuth();
-  
-
+  const { currentUser, logout, currentName, userPhotoURL } = useAuth();
+  let photoUrl = userPhotoURL;
+ console.log(userPhotoURL);
   
   useEffect(() => {
     fetchTasks();
@@ -24,6 +24,7 @@ export default function Dashboard() {
 
   const fetchTasks = async () => {
     try {
+      await currentUser.reload()
       const token = await currentUser.getIdToken(true);
       console.log(token)
       const response = await fetch('http://localhost:4000/dashboard/tasks', {
@@ -87,7 +88,7 @@ export default function Dashboard() {
         <h2 className="text-center mb-4">Task Manager</h2>
         <div className="card-columns">
           {tasks.map((task) => (
-            <TaskCard key={task.id} task={task} handleOpenModal={handleOpenModal} />
+            <TaskCard key={task.id} task={task} handleOpenModal={handleOpenModal} profilePhoto={userPhotoURL} />
           ))}
           {isModalOpen && selectedTask && (
             <TaskDetailModal
@@ -103,10 +104,15 @@ export default function Dashboard() {
   );
 }
 
-function TaskCard({ task, handleOpenModal }) {
+function TaskCard({ task, handleOpenModal, profilePhoto }) {
   return (
     <Card className="mb-3 card2" style={{ borderRadius: "20px" }} onClick={() => handleOpenModal(task)}>
       <Card.Body>
+        <Col>
+          <span className="h6 font-semibold text-muted text-sm d-block mb-2">
+          
+          </span>
+        </Col>
         <Col>
           <span className="h6 font-semibold text-muted text-sm d-block mb-2">
           {task.company}

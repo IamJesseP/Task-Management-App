@@ -3,18 +3,25 @@ import { Form, Button, Card, Alert, ToggleButtonGroup, ToggleButton } from 'reac
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, updateProfile } from 'firebase/auth';
+import { storage } from '../firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function Signup() {
+  // form inputs
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const userNameRef = useRef();
-  const navigate = useNavigate();
-  const { signup, currentUser } = useAuth();
-  const auth = getAuth();
+  const [profilePicFile, setProfilePicFile] = useState();
+
+  //state handlers
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [accountType, setAccountType] = useState('student'); // Default account type is student
+
+  const navigate = useNavigate();
+  const { signup, currentUser } = useAuth();
+  const auth = getAuth();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -34,11 +41,16 @@ export default function Signup() {
       const userCredential = await signup(emailRef.current.value, passwordRef.current.value);
       const user = userCredential.user;
 
+      const profilePicRef = ref(storage, `profilePics/${user.uid}`);
+      await uploadBytes(profilePicRef, profilePicFile);
+      const profilePicURL = await getDownloadURL(profilePicRef);
+
       let userName = `${accountType}.${userNameRef.current.value}`;
       await updateProfile(user, {
-        displayName: userName
+        displayName: userName,
+        photoURL: profilePicURL
       });
-
+      await user.reload();
       navigate('/');
     } catch (error) {
       setError('Failed to create an account');
@@ -80,6 +92,14 @@ export default function Signup() {
             </ToggleButton>
           </ToggleButtonGroup>
           <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formFile" className="mb-3">
+              <Form.Label>Profile Picture</Form.Label>
+              <Form.Control
+                type="file"
+                onChange={(e) => setProfilePicFile(e.target.files[0])}
+                accept="image/*"
+              />
+            </Form.Group>
             <Form.Group id="userName">
               <Form.Label>{accountType === 'student' ? 'Student Name' : 'Company Name'}</Form.Label>
               <Form.Control type="text" ref={userNameRef} required />
