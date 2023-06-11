@@ -7,6 +7,7 @@ import Dashboard from './Dashboard';
 import Login from './Login';
 import PrivateRoute from './PrivateRoute';
 import ForgotPassword from './ForgotPassword';
+import MyTasks from './MyTasks';
 
 function App() {
   return (
@@ -19,6 +20,13 @@ function App() {
               element={
                 <PrivateRoute>
                   <Dashboard />
+                </PrivateRoute>
+              }></Route>
+            <Route
+              path="/my-tasks"
+              element={
+                <PrivateRoute>
+                  <MyTasks />
                 </PrivateRoute>
               }></Route>
             <Route path="/signup" element={<Signup />} />

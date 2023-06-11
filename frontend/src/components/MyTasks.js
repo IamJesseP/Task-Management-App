@@ -85,7 +85,7 @@ export default function Dashboard() {
     <div className="d-flex">
       <Navibar className="navbar" />
       <div className="content">
-        <h2 className="text-center mb-4">Marketplace</h2>
+        <h2 className="text-center mb-4">My Tasks</h2>
         <div className="card-columns">
           {tasks.map((task) => (
             <TaskCard key={task.id} task={task} handleOpenModal={handleOpenModal} profilePhoto={userPhotoURL} />
