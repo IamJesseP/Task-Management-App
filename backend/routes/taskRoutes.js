@@ -13,7 +13,7 @@ const {
 
 router.get('/', requireFirebaseToken, getAllTasks);
 router.post('/', requireFirebaseToken, createTask);
-router.get('/showMyTasks', getCurrentUserTasks);
+router.get('/showMyTasks', requireFirebaseToken, getCurrentUserTasks);
 router.patch('/studentUpdate/:id', requireFirebaseToken, updateStudentTask);
 router.patch('/companyUpdate/:id', requireFirebaseToken, updateCompanyTask);
 router.delete('/:id', deleteTask);

@@ -50,7 +50,41 @@ const getAllTasks = async (req, res) => {
 };
 
 const getCurrentUserTasks = async (req, res) => {
-  res.send('get current user tasks route');
+  const { name } = req.user;
+  if (!name) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      error: 'Missing required fields',
+    });
+  }
+  const displayName = name.slice(8);
+  if (name.startsWith('student')) {
+    const tasksRef = db.collection('tasks');
+    const snapshot = await tasksRef.where('student', '==', displayName).get();
+    if (snapshot.empty) {
+      res.status(404).send('No matching tasks.');
+    }
+    const tasks = [];
+    snapshot.forEach((doc) => {
+      const task = doc.data();
+      task.id = doc.id;
+      tasks.push(task);
+    });
+    res.status(200).json(tasks);
+  }
+  if (name.startsWith('company')) {
+    const tasksRef = db.collection('tasks');
+    const snapshot = await tasksRef.where('company', '==', displayName).get();
+    if (snapshot.empty) {
+      res.status(404).send('No matching tasks.');
+    }
+    const tasks = [];
+    snapshot.forEach((doc) => {
+      const { id } = doc;
+      const data = doc.data();
+      tasks.push({ id, ...data });
+    });
+    res.status(200).json(tasks);
+  }
 };
 
 const updateStudentTask = async (req, res) => {
@@ -59,7 +93,6 @@ const updateStudentTask = async (req, res) => {
   const taskId = req.params.id;
   const { isSubmitted } = req.body;
   let { submissionCounter } = req.body;
-  console.log(displayName, taskId, isSubmitted, submissionCounter);
   if (!displayName || !taskId) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       error: 'Missing required fields',
