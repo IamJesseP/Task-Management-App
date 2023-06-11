@@ -41,7 +41,36 @@ export default function Dashboard() {
       console.error('Error fetching tasks:', error);
     }
   };
+  const handleTaskUpdate = async (taskId, isSubmitted, submissionCounter) => {
+    try {
+      const token = await auth.currentUser.getIdToken(true); 
+      const response = await fetch(`http://localhost:4000/dashboard/tasks/studentUpdate/${taskId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          isSubmitted, // task.isSubmitted
+          submissionCounter, // return current task.submissionCounter
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
   
+      await fetchTasks();
+      const updatedTask = await response.json()
+      return updatedTask;
+  
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+
+
   const handleOpenModal = (task) => {
     setSelectedTask(task);
     setModalOpen(true);
@@ -61,7 +90,7 @@ export default function Dashboard() {
         <TaskCard key={task.id} task={task} handleOpenModal={handleOpenModal} />
         ))}
         {isModalOpen && selectedTask && (
-        <TaskDetailModal task={selectedTask} show={isModalOpen} onHide={handleCloseModal} />
+        <TaskDetailModal task={selectedTask} show={isModalOpen} onProfileUpdate={handleTaskUpdate} onHide={handleCloseModal} />
       )}
         </div>
       </div>
@@ -86,10 +115,11 @@ function TaskCard({ task, handleOpenModal }) {
   );
 }
 
-function TaskDetailModal({ task, show, onHide }) {
+function TaskDetailModal({ task, show, onHide, onProfileUpdate }) {
   const [isEditOn, setIsEditOn] = useState(false)
   const [check, setCheck] = useState(task.status ? true : false)
   const [userType, setUserType] = useState('')
+  const [taskClaimStatus, setTaskClaimStatus] = useState(task.student)
   const { currentUser, logout, currentName } = useAuth();
   let displayName = currentName
   
@@ -118,31 +148,8 @@ function TaskDetailModal({ task, show, onHide }) {
 
   }
 
-  const updateStudentTask = async (taskId, isSubmitted, submissionCounter) => {
-    try {
-      const token = await auth.currentUser.getIdToken(true); 
-      const response = await fetch(`http://localhost:4000/dashboard/tasks/studentUpdate/${taskId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          isSubmitted, // task.isSubmitted
-          submissionCounter, // return current task.submissionCounter
-        }),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-  
-      const data = await response.json();
-      return data;
-  
-    } catch (error) {
-      console.error('Error:', error);
-    }
+  const handleUpdateAndClose = async (taskId, isSubmitted, submissionCounter) => {
+    await onProfileUpdate(taskId, isSubmitted, submissionCounter)
   };
   useEffect(()=>updateModalComponents(), [])
 
@@ -179,10 +186,13 @@ function TaskDetailModal({ task, show, onHide }) {
         {userType === 'student' && 
         <Button 
           variant='success' 
-          onClick={()=>updateStudentTask(task.id, task.isSubmitted, task.submissionCounter)} 
-          disabled={task.student}
+          onClick={()=>{
+            handleUpdateAndClose(task.id, task.isSubmitted, task.submissionCounter)
+            setTaskClaimStatus(!taskClaimStatus)
+          }} 
+          disabled={taskClaimStatus}
         >
-          {task.student ? 'Claimed': 'Claim Task'}
+          {taskClaimStatus ? 'Claimed': 'Claim Task'}
         </Button>}
         <Button onClick={onHide} variant={'secondary'}>Close</Button>
       </Modal.Footer>
