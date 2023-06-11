@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Alert, ListGroup, Badge, Modal, Form } from 'react-bootstrap';
+import { Card, Button, Alert, ListGroup, Badge, Modal, Form, Container, Col, Row, Navbar, Nav } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import '../style.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -81,17 +81,22 @@ export default function Dashboard() {
   };
 
   return (
-    <div className='d-flex flex-column margin-1rem'>
+    <div className="d-flex">
       <Navibar className="navbar" />
-      <div className='d-flex align-items justify-content flex-column'>
-      <h2 className="text-center mb-4">Task Manager</h2>
-      <div className="card-columns">
-      { tasks.map((task) => ( //if tasks is empty, screen throws error
-        <TaskCard key={task.id} task={task} handleOpenModal={handleOpenModal} />
-        ))}
-        {isModalOpen && selectedTask && (
-        <TaskDetailModal task={selectedTask} show={isModalOpen} onProfileUpdate={handleTaskUpdate} onHide={handleCloseModal} />
-      )}
+      <div className="content">
+        <h2 className="text-center mb-4">Task Manager</h2>
+        <div className="card-columns">
+          {tasks.map((task) => (
+            <TaskCard key={task.id} task={task} handleOpenModal={handleOpenModal} />
+          ))}
+          {isModalOpen && selectedTask && (
+            <TaskDetailModal
+              task={selectedTask}
+              show={isModalOpen}
+              onProfileUpdate={handleTaskUpdate}
+              onHide={handleCloseModal}
+            />
+          )}
         </div>
       </div>
     </div>
@@ -100,17 +105,26 @@ export default function Dashboard() {
 
 function TaskCard({ task, handleOpenModal }) {
   return (
-    <Card className="bg-light mb-3" onClick={() => handleOpenModal(task)}>
-      <Card.Header>{task.company}</Card.Header>
-      <Card.Header>{task.title}</Card.Header>
+    <Card className="mb-3 card2" style={{ borderRadius: "20px" }} onClick={() => handleOpenModal(task)}>
       <Card.Body>
+        <Col>
+          <span className="h6 font-semibold text-muted text-sm d-block mb-2">
+          {task.company}
+          </span>
+          <span className="h6 font-semibold mb-0">{task.title}</span>
+        </Col>
         <Card.Text>{task.description}</Card.Text>
+        <div className="mt-2 mb-0 text-sm">
+          <Badge bg={!task.status ? 'success' : 'secondary'} className="ml-2 rounded-pill bg-opacity-30">
+            {!task.status ? 'Open' : 'Closed'}
+          </Badge>
+        </div>
       </Card.Body>
-      <Card.Footer>
+      {/* <Card.Footer>
         <Badge bg={!task.status ? 'success' : 'secondary'} className="ml-2">
           {!task.status ? 'Open' : 'Closed'}
         </Badge>
-      </Card.Footer>
+      </Card.Footer> */}
     </Card>
   );
 }

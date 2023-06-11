@@ -3,39 +3,68 @@ html, body, #root, .container {
   padding: 0;
   height: 100%;
   width: 100%;
+  background-color: #f5f9fc;
 }
 
 .navbar {
-    display: flex;
-    float: left;
-    width: 100%;
-    height: 60px; 
-    background-color: #333; 
-    z-index: 100;
-  }
-  
-  .container { 
-    margin: 10px;
-    padding: 20px 40px;
-  }
-  
-  .card-columns {
-    margin: 2rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
-    grid-gap: 1rem; 
-    justify-content: center;
-  }
-  .card{
-    background: #e0e0e0;
-    cursor: pointer;
-    box-shadow:  3px 3px 5px #cacaca,
-             -3px -3px 5px #f6f6f6;
-  }
-  .card:hover{
-    transform: translateY(-7px);
-  }
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 300px;
+  background-color: #5255F3;
+  z-index: 100;
+}
 
-  .test {
-    height: 16rem;
-  }
+.navbar-vertical {
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+}
+
+.sidebar {
+  padding: 20px;
+}
+
+.navbar-nav .nav-item a{
+  width: 100%;
+}
+.account{
+  float: bottom;
+}
+
+.navbar-nav .nav-item a:hover {
+  color: #5255f3;
+}
+.container-row{
+  height: 100%;
+}
+
+.card-columns {
+  margin: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-gap: 1rem;
+  justify-content: center;
+}
+
+.card {
+  background: #ffffff;
+  border-color: transparent !important;
+  cursor: pointer;
+  box-shadow: 3px 3px 5px #cacaca, -3px -3px 5px #f6f6f6;
+}
+
+
+.card2:hover {
+  transform: translateY(-7px);
+}
+
+.content {
+  flex: 1;
+  padding: 1rem;
+}
+.bar{
+  opacity: 0.2;
+  width: 300px;
+}
