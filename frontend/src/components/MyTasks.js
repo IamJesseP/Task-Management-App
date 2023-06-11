@@ -90,7 +90,7 @@ const handleTaskUpdate = async (taskId, isSubmitted, submissionCounter) => {
       <div className="content">
         <div className='d-flex justify-content-center align-items-center flex-column'>
             <h2 className="text-center mb-4">My Tasks</h2>
-            <TaskCreateModal fetchTasks={fetchTasks}/>
+            {currentName.startsWith('company') && <TaskCreateModal fetchTasks={fetchTasks}/>}
         </div>
         <div className="card-columns">
           {tasks.map((task) => (
