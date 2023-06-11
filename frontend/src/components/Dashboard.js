@@ -26,7 +26,6 @@ export default function Dashboard() {
     try {
       await currentUser.reload()
       const token = await currentUser.getIdToken(true);
-      console.log(token)
       const response = await fetch('http://localhost:4000/dashboard/tasks', {
         method: 'GET',
         headers: {

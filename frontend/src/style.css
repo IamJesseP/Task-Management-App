@@ -68,3 +68,7 @@ html, body, #root, .container {
   opacity: 0.2;
   width: 300px;
 }
+
+.createTaskButton{
+  float: right;
+}

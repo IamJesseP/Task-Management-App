@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Alert, ListGroup, Badge, Modal, Form, Container, Col, Row, Navbar, Nav } from 'react-bootstrap';
+import { Card, Button, Badge, Modal,  Col,} from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import '../style.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import Navibar from './Navibar';
+import TaskCreateModal from './TaskCreateModal';
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -18,31 +19,33 @@ export default function Dashboard() {
   let photoUrl = userPhotoURL;
  console.log(userPhotoURL);
   
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
-  const fetchTasks = async () => {
-    try {
-      await currentUser.reload()
-      const token = await currentUser.getIdToken(true);
-      console.log(token)
-      const response = await fetch('http://localhost:4000/dashboard/tasks', {
-        method: 'GET',
+ 
+ const fetchTasks = async () => {
+     try {
+         await currentUser.reload()
+         const token = await currentUser.getIdToken(true);
+         console.log(token)
+         const response = await fetch('http://localhost:4000/dashboard/tasks/showMyTasks', {
+             method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         }
-      });
-      const data = await response.json();
-      console.log(data);
-      setTasks(data);
-      console.log(tasks.status);
-    } catch (error) {
-      console.error('Error fetching tasks:', error);
-    }
-  };
-  const handleTaskUpdate = async (taskId, isSubmitted, submissionCounter) => {
+    });
+    const data = await response.json();
+    console.log(data);
+    setTasks(data);
+    console.log(tasks.status);
+} catch (error) {
+    console.error('Error fetching tasks:', error);
+}
+};
+
+useEffect(() => {
+  fetchTasks();
+}, []);
+
+const handleTaskUpdate = async (taskId, isSubmitted, submissionCounter) => {
     try {
       const token = await auth.currentUser.getIdToken(true); 
       const response = await fetch(`http://localhost:4000/dashboard/tasks/studentUpdate/${taskId}`, {
@@ -85,7 +88,10 @@ export default function Dashboard() {
     <div className="d-flex">
       <Navibar className="navbar" />
       <div className="content">
-        <h2 className="text-center mb-4">My Tasks</h2>
+        <div className='d-flex justify-content-center align-items-center flex-column'>
+            <h2 className="text-center mb-4">My Tasks</h2>
+            <TaskCreateModal fetchTasks={fetchTasks}/>
+        </div>
         <div className="card-columns">
           {tasks.map((task) => (
             <TaskCard key={task.id} task={task} handleOpenModal={handleOpenModal} profilePhoto={userPhotoURL} />
