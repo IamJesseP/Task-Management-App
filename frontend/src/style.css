@@ -4,7 +4,7 @@ html, body, #root, .container {
   height: 100%;
   width: 100%;
   background: #E8EBF0;
-  background-image: linear-gradient(0deg, #e7eaf0 0%, #ffffff 100%);
+
 }
 
 .logo {
@@ -83,6 +83,7 @@ html, body, #root, .container {
 
 .content {
   flex: 1;
+  background-image: linear-gradient(0deg, #e7eaf0 0%, #ffffff 100%);
 }
 .header1{
   width: 100%;
