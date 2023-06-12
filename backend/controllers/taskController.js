@@ -137,11 +137,11 @@ const updateStudentTask = async (req, res) => {
 };
 
 const updateCompanyTask = async (req, res) => {
-  // requires: title, id, description, status
+  // requires: title, id, description
   const displayName = req.user.name;
   const taskId = req.params.id;
-  const { title, description, status } = req.body;
-  if (!title || !description || !status) {
+  const { title, description } = req.body;
+  if (!title || !description) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       error: 'Missing required fields',
     });
@@ -152,7 +152,7 @@ const updateCompanyTask = async (req, res) => {
       await taskRef.update({
         title,
         description,
-        status,
+        
       });
       const task = await taskRef.get();
       if (!task.exists) {
