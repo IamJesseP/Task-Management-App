@@ -54,7 +54,6 @@ export default function Signup() {
       navigate('/');
     } catch (error) {
       setError('Failed to create an account');
-      console.log(error);
     }
 
     setLoading(false);

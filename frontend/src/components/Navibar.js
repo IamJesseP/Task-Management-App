@@ -1,13 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Nav, Navbar, Container, NavDropdown, Button } from 'react-bootstrap';
+import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import '../style.css';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { getAuth, updateProfile } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
 const auth = getAuth();
-// switch hrefs with react router maybe?
 function Navibar() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -24,7 +23,6 @@ function Navibar() {
       navigate('/login');
     } catch (error) {
       setError('Failed to log out');
-      console.log(error);
     }
   }
 
