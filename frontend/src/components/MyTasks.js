@@ -10,26 +10,23 @@ import {
   Form,
   ModalFooter,
   ToggleButton,
-  ToggleButtonGroup,
-  Alert
+  ToggleButtonGroup
 } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import '../style.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import Navibar from './Navibar';
 import TaskCreateModal from './TaskCreateModal';
-import { storage } from '../firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
-  const [error, setError] = useState('');
+
   const navigate = useNavigate();
   const { currentUser, logout, currentName, userPhotoURL } = useAuth();
-  let photoUrl = userPhotoURL;
+
   console.log(userPhotoURL);
 
   const fetchTasks = async () => {
@@ -158,7 +155,7 @@ export default function Dashboard() {
   );
 }
 
-function TaskCard({ task, handleOpenModal, profilePhoto }) {
+function TaskCard({ task, handleOpenModal }) {
   return (
     <Card
       className="mb-3 card2"
@@ -186,18 +183,13 @@ function TaskCard({ task, handleOpenModal, profilePhoto }) {
           </Badge>
         </div>
       </Card.Footer>
-      {/* <Card.Footer>
-        <Badge bg={!task.status ? 'success' : 'secondary'} className="ml-2">
-          {!task.status ? 'Open' : 'Closed'}
-        </Badge>
-      </Card.Footer> */}
     </Card>
   );
 }
 
 function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
   const [googleDocLink, setGoogleDocLink] = useState('');
-  const { currentUser, logout, currentName } = useAuth();
+  const { currentName } = useAuth();
   const [submissionStatus, setSubmissionStatus] = useState(false);
   const [hasFile, setHasFile] = useState(false);
 

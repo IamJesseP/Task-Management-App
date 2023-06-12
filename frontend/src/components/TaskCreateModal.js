@@ -9,7 +9,7 @@ function TaskCreateModal({ fetchTasks }) {
   const taskDescription = useRef();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const { currentUser, logout, currentName, userPhotoURL } = useAuth();
+  const { currentUser } = useAuth();
 
   const handleSubmit = async () => {
     try {
@@ -26,11 +26,11 @@ function TaskCreateModal({ fetchTasks }) {
         })
       });
       if (!response.ok) {
-        console.log('test');
+        console.log('Error, response not okay');
       }
 
       const createdTask = await response.json();
-      console.log(createdTask);
+
       return createdTask;
     } catch (error) {
       console.error('Error:', error);

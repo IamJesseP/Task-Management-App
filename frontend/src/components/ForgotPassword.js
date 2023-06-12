@@ -23,7 +23,6 @@ export default function ForgotPassword() {
       setMessage('Check your inbox for further instructions');
     } catch (error) {
       setError('Failed to reset password');
-      console.log(error);
     }
 
     setLoading(false);
