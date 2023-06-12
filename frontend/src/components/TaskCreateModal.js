@@ -44,15 +44,16 @@ function TaskCreateModal({ fetchTasks }) {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="primary" style={{ maxWidth: '250px' }} onClick={handleShow}>
         Create Task
       </Button>
-
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+      <Modal show={show} style={{ borderRadius: '20px' }} onHide={handleClose}>
+        <Modal.Header
+          style={{ borderTopLeftRadius: '20px', borderTopRightRadius: '20px' }}
+          closeButton>
           <Modal.Title>Create New Task</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ borderRadius: '20px' }}>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
               <Form.Label>Task Title</Form.Label>

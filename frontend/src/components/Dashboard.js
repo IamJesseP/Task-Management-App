@@ -52,14 +52,25 @@ export default function Dashboard() {
 
   const handleCloseModal = () => {
     setModalOpen(false);
+  }; 
+
+  const [toggle, setToggle] = useState(true);
+  const Toggle = () => {
+    setToggle(!toggle);
   };
- 
 
   return (
     <div className="d-flex">
-      <Navibar className="navbar" />
+      {toggle && <div className="nav" >
+        <Navibar className="navbar" />
+      </div>}
       <div className="content">
-        <div className="container-row" style={{ height: "115px"}}>
+        <ToggleButton variant="primary" style={{ maxWidth: '250px', position: 'relative', left: '20px', top: '20px', zIndex: '100' }} onClick={Toggle}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-list" viewBox="0 0 16 16">
+            <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+          </svg>
+        </ToggleButton>
+        <div className="container-row" style={{ height: "100px"}}>
           <h2 className="text-center">Marketplace</h2>
           <div className='filterButton'>
           <ToggleButtonGroup
@@ -215,6 +226,7 @@ function TaskDetailModal({ task, show, onHide, setRefreshTrigger }) {
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       className='pt-20px'
+      style={{ borderRadius: '20px'}}
       backdrop='static'
       centered
     >

@@ -3,11 +3,12 @@ html, body, #root, .container {
   padding: 0;
   height: 100%;
   width: 100%;
-  background-color: #f5f9fc;
+  background: #E8EBF0;
+  background-image: linear-gradient(0deg, #e7eaf0 0%, #ffffff 100%);
 }
 
 .logo {
-  background-image: linear-gradient(0deg, rgba(77,54,208,1) 0%, rgba(132,116,254,1) 100%);
+  background-image: linear-gradient(0deg, #4d36d0 0%, #8474fe 100%);
   -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -20,6 +21,7 @@ html, body, #root, .container {
   z-index: 100;
   box-shadow: 1px 1px 1px #e7eaf0;
   position: sticky;
+  
 }
 
 .navbar-vertical {
@@ -41,20 +43,22 @@ html, body, #root, .container {
   float: bottom;
 }
 
-.header{
-  background: #ffffff;
-  border: #080808;
-  box-shadow: 3px 3px 5px #e7eaf0;
-}
 .container-row {
   height: 100%;
   /* width: 100%; */
   display: grid;
   flex-basis: 100%;
   overflow: hidden;
-  background: #ffffff;
-  padding: 16px;
+  background: transparent;
+  padding: 0 16px 16px 16px;
   box-shadow: 3px 3px 5px #e7eaf0;
+  justify-content: center;
+  /* background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3); */
 }
 
 .card-columns {
@@ -68,7 +72,7 @@ html, body, #root, .container {
 
 .card {
   background: #ffffff;
-  border-color: transparent !important;
+  border-color: none !important;
   cursor: pointer;
   box-shadow: 3px 3px 5px #cacaca, -3px -3px 5px #f6f6f6;
 }
@@ -109,4 +113,9 @@ html, body, #root, .container {
   display: flex;
   justify-content: center;
   
+}
+.icon{
+  height: 25px;
+  width: 25px;
+  color: #8474fe;
 }
