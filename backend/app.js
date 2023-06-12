@@ -15,7 +15,7 @@ var corsOptions = {
   origin: "https://task-management-app-nine-beryl.vercel.app", //  frontend domain
   optionsSuccessStatus: 200,
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 };
 
 app.use(cors(corsOptions));
