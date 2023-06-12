@@ -38,7 +38,7 @@ function Navibar() {
     <>
       <div className="navbar">
         <div className="header1">
-          <div className="container-row2" style={{ height: '100px' }}>
+          <div className="container-row2">
             <h2 className="text-center mb-0">Tech Incubator</h2>
           </div>
           <ul className="navbar-nav flex-column my-1">

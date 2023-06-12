@@ -60,7 +60,7 @@ export default function Dashboard() {
       <Navibar className="navbar" />
 
       <div className="content">
-        <div className="container-row" style={{ height: "100px"}}>
+        <div className="container-row" style={{ height: "115px"}}>
           <h2 className="text-center">Marketplace</h2>
           <div className='filterButton'>
           {/* <Button
