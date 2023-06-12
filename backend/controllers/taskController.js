@@ -88,10 +88,10 @@ const getCurrentUserTasks = async (req, res) => {
 };
 
 const updateStudentTask = async (req, res) => {
-  // requires: displayName, taskId, isSubmitted, submissionFile
+  // requires: displayName, taskId, submissionFile
   const displayName = req.user.name;
   const taskId = req.params.id;
-  const { submissionStatus } = req.body;
+  let { submissionStatus } = req.body;
   let { submissionFile } = req.body;
   if (!displayName || !taskId) {
     return res.status(StatusCodes.BAD_REQUEST).json({
@@ -99,18 +99,21 @@ const updateStudentTask = async (req, res) => {
     });
   }
   if (!submissionFile) {
-    submissionFile = null;
+    submissionFile = false;
+  }
+  if (!submissionStatus) {
+    submissionStatus = false;
   }
   const taskRef = db.collection('tasks').doc(taskId);
   if (displayName.startsWith('student')) {
     try {
       await taskRef.update({
         submissionLink: submissionFile,
-        isSubmitted: submissionStatus,
+        submissionStatus,
         student: displayName.slice(8),
       });
     } catch (error) {
-      res
+      return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: 'Failed to update task', msg: error });
     }
@@ -122,16 +125,14 @@ const updateStudentTask = async (req, res) => {
           .json({ error: 'Task not found' });
       }
 
-      res.status(StatusCodes.OK).json({ ...task.data() });
+      return res.status(StatusCodes.OK).json({ ...task.data() });
     } catch (error) {
-      res
+      return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: 'Failed to get task', msg: error });
     }
   } else {
-    res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ error: 'Failed to update task' });
+    return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Not a student' });
   }
 };
 
@@ -162,12 +163,12 @@ const updateCompanyTask = async (req, res) => {
 
       res.status(StatusCodes.OK).json({ ...task.data() });
     } catch (error) {
-      res
+      return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: 'Failed to update task', msg: error });
     }
   } else {
-    res
+    return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ error: 'Failed to update task' });
   }
@@ -176,7 +177,7 @@ const updateCompanyTask = async (req, res) => {
 const deleteTask = async (req, res) => {
   const displayName = req.user.name;
   if (!displayName.startsWith('company')) {
-    res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Unauthorized' });
+    return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'Unauthorized' });
   }
   const taskId = req.params.id;
   if (!taskId) {
@@ -195,11 +196,11 @@ const deleteTask = async (req, res) => {
     }
 
     await taskRef.delete();
-    res
+    return res
       .status(StatusCodes.OK)
       .json({ message: `Task ${taskId} deleted successfully` });
   } catch (err) {
-    res
+    return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: 'Internal server error', msg: err });
   }

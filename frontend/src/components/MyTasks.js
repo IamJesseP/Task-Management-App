@@ -203,7 +203,7 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
       <ModalFooter>
         <div>
           Current Submission:
-          <a href={task.submissionLink}>{task.submissionLink ? 'here' : 'none'}</a>
+          <a href={task.submissionLink}>{task.submissionLink ? 'here' : ' none'}</a>
           <br />
           Claimed by: {task.student ? `${task.student}` : 'none'}
         </div>

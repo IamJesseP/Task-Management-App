@@ -42,33 +42,6 @@ export default function Dashboard() {
       console.error('Error fetching tasks:', error);
     }
   };
-  const handleTaskUpdate = async (taskId, isSubmitted, submissionCounter) => {
-    try {
-      const token = await auth.currentUser.getIdToken(true); 
-      const response = await fetch(`http://localhost:4000/dashboard/tasks/studentUpdate/${taskId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          isSubmitted, // task.isSubmitted
-          submissionCounter, // return current task.submissionCounter
-        }),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-  
-      await fetchTasks();
-      const updatedTask = await response.json()
-      return updatedTask;
-  
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
 
 
 
@@ -108,7 +81,6 @@ export default function Dashboard() {
             <TaskDetailModal
               task={selectedTask}
               show={isModalOpen}
-              onProfileUpdate={handleTaskUpdate}
               onHide={handleCloseModal}
             />
           )}
@@ -135,8 +107,8 @@ function TaskCard({ task, handleOpenModal, profilePhoto }) {
         </Col>
         <Card.Text>{task.description}</Card.Text>
         <div className="mt-2 mb-0 text-sm">
-          <Badge bg={!task.isSubmitted ? 'success' : 'secondary'} className="ml-2 rounded-pill bg-opacity-30">
-            {!task.isSubmitted ? 'Open' : 'Closed'}
+          <Badge bg={!task.submissionStatus ? 'success' : 'secondary'} className="ml-2 rounded-pill bg-opacity-30">
+            {!task.submissionStatus ? 'Open' : 'Closed'}
           </Badge>
         </div>
       </Card.Body>
@@ -149,14 +121,41 @@ function TaskCard({ task, handleOpenModal, profilePhoto }) {
   );
 }
 
-function TaskDetailModal({ task, show, onHide, onProfileUpdate }) {
+function TaskDetailModal({ task, show, onHide }) {
   const [isEditOn, setIsEditOn] = useState(false)
   const [check, setCheck] = useState(task.status ? true : false)
   const [userType, setUserType] = useState('')
   const [taskClaimStatus, setTaskClaimStatus] = useState(task.student)
   const { currentUser, logout, currentName } = useAuth();
   let displayName = currentName
+
+  const handleTaskUpdate = async (taskId, submissionStatus) => {
+    try {
+      const token = await auth.currentUser.getIdToken(true); 
+      const response = await fetch(`http://localhost:4000/dashboard/tasks/studentUpdate/${taskId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          submissionStatus: submissionStatus // task.submissionStatus
+        }),
+      });
+      
+      if (!response.ok) {
+        console.error(`Response status: ${response.status}`);
+        throw new Error('Network response was not ok');
+      }
   
+      // await fetchTasks();
+      const updatedTask = await response.json()
+      return updatedTask;
+  
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   function handleStatus(){
     setCheck(!check)
@@ -178,12 +177,10 @@ function TaskDetailModal({ task, show, onHide, onProfileUpdate }) {
       handleEdit()
     }
   }
-  function handleClaim(){
 
-  }
 
-  const handleUpdateAndClose = async (taskId, isSubmitted, submissionCounter) => {
-    await onProfileUpdate(taskId, isSubmitted, submissionCounter)
+  const handleUpdateAndClose = async (taskId, submissionStatus) => {
+    await handleTaskUpdate(taskId, submissionStatus)
   };
   useEffect(()=>updateModalComponents(), [])
 
@@ -221,7 +218,7 @@ function TaskDetailModal({ task, show, onHide, onProfileUpdate }) {
         <Button 
           variant='success' 
           onClick={()=>{
-            handleUpdateAndClose(task.id, task.isSubmitted, task.submissionCounter)
+            handleUpdateAndClose(task.id, task.submissionStatus)
             setTaskClaimStatus(!taskClaimStatus)
           }} 
           disabled={taskClaimStatus}
