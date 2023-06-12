@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Alert, ListGroup, Badge, Modal, Form, Container, Col, Row, Navbar, Nav } from 'react-bootstrap';
+import { Card, Button, Alert, ListGroup, Badge, Modal, Form, Container, Col, Row, Navbar, Nav, ToggleButton } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import '../style.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ import Navibar from './Navibar';
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
+  const [checked, setChecked] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [error, setError] = useState('');
@@ -79,12 +80,26 @@ export default function Dashboard() {
   const handleCloseModal = () => {
     setModalOpen(false);
   };
+  
 
   return (
     <div className="d-flex">
       <Navibar className="navbar" />
       <div className="content">
-        <h2 className="text-center mb-4">Marketplace</h2>
+        <div className="container-row" style={{ height: "100px"}}>
+          <h2 className="text-center">Marketplace</h2>
+          <ToggleButton
+            className="mb-2"
+            id="toggle-check"
+            type="checkbox"
+            variant="outline-primary"
+            checked={checked}
+            value="1"
+            onChange={(e) => setChecked(e.currentTarget.checked)}
+          >
+          Completed
+          </ToggleButton>
+        </div>
         <div className="card-columns">
           {tasks.map((task) => (
             <TaskCard key={task.id} task={task} handleOpenModal={handleOpenModal} profilePhoto={userPhotoURL} />

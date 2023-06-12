@@ -11,7 +11,7 @@ html, body, #root, .container {
   flex-direction: column;
   height: 100vh;
   width: 300px;
-  background-color: #5255F3;
+  background-color: #ffffff;
   z-index: 100;
 }
 
@@ -26,18 +26,25 @@ html, body, #root, .container {
   padding: 20px;
 }
 
-.navbar-nav .nav-item a{
+.navbar-nav .nav-item a {
   width: 100%;
 }
-.account{
+
+.account {
   float: bottom;
 }
 
-.navbar-nav .nav-item a:hover {
-  color: #5255f3;
-}
-.container-row{
+.container-row {
   height: 100%;
+  width: 100%;
+  /* display: grid; */
+  width: 100%;
+  flex-basis: 100%;
+  overflow: hidden;
+  /* grid-template-columns: repeat(1, 100%); */
+  /* box-sizing: border-box; */
+  margin: 16px;
+  border-color: #e7eaf0 !important;
 }
 
 .card-columns {
@@ -55,7 +62,6 @@ html, body, #root, .container {
   box-shadow: 3px 3px 5px #cacaca, -3px -3px 5px #f6f6f6;
 }
 
-
 .card2:hover {
   transform: translateY(-7px);
 }
@@ -64,11 +70,12 @@ html, body, #root, .container {
   flex: 1;
   padding: 1rem;
 }
-.bar{
+
+.bar {
   opacity: 0.2;
-  width: 300px;
+  width: 100%;
 }
 
-.createTaskButton{
+.createTaskButton {
   float: right;
 }

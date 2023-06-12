@@ -66,7 +66,7 @@ function Navibar() {
         </Container>
       </Navbar> */}
       <nav
-        className="navbar navbar-expand-md navbar-vertical"
+        className="navbar navbar-expand-md navbar-vertical sticky-top"
         style={{ boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
         <div className="container-row">
           <button
@@ -78,7 +78,7 @@ function Navibar() {
           </button>
           <ul className={`navbar-nav flex-column my-1 ${isSidebarOpen ? 'show' : ''}`}>
             <li className="nav-item">
-              <Nav.Link href="#home" style={{ float: 'left', fontWeight: 'bold' }}>
+              <Nav.Link className="nav-link" href="#">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -88,11 +88,27 @@ function Navibar() {
                   viewBox="0 0 16 16">
                   <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
                 </svg>
-                <Link to="/">Marketplace</Link>
+                <Link to="/" style={{ textDecoration: 'none' }}>
+                  Marketplace
+                </Link>
               </Nav.Link>
             </li>
             <li className="nav-item">
-              <i className="bi bi-bar-chart"></i> <Link to="/my-tasks">My Tasks</Link>
+              <a className="nav-link" href="#">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="16"
+                  fill="currentColor"
+                  className="bi bi-card-checklist"
+                  viewBox="0 0 16 16">
+                  <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+                  <path d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z" />
+                </svg>
+                <i className="bi bi-b-chart"></i>{' '}
+                <Link to="/my-tasks" style={{ color: '#525f7f', textDecoration: 'none' }}>
+                  My Tasks
+                </Link>
+              </a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">
@@ -108,11 +124,11 @@ function Navibar() {
                 <i className="bi bi-chat" style={{ color: '#5255f3' }}></i> Messages
               </a>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a className="nav-link" href="#">
                 <i className="bi bi-bookmarks"></i> Collections
               </a>
-            </li>
+            </li> */}
             <li className="nav-item">
               <a className="nav-link" href="#">
                 <svg
@@ -127,8 +143,8 @@ function Navibar() {
                 <i className="bi bi-people"></i> Users
               </a>
             </li>
+            <hr className="bar"></hr>
           </ul>
-          <hr className="bar"></hr>
           <ul className="navbar-nav flex-column account">
             <li className="nav-item mt-auto">
               <NavDropdown title="Profile" id="basic-nav-dropdown" style={{ color: '#333' }}>
