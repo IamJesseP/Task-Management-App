@@ -11,12 +11,12 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const cors = require('cors');
 var corsOptions = {
-  origin: 'http://yourfrontend.com', //  frontend domain
+  origin: 'https://task-management-app-nine-beryl.vercel.app/', //  frontend domain
   optionsSuccessStatus: 200 
 }
 
 app.use(helmet());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(xss());
 
 app.use(express.json());
