@@ -1,7 +1,17 @@
 /* eslint-disable react/prop-types */
 
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Badge, Modal, Col, Form, ModalFooter } from 'react-bootstrap';
+import {
+  Card,
+  Button,
+  Badge,
+  Modal,
+  Col,
+  Form,
+  ModalFooter,
+  ToggleButton,
+  ToggleButtonGroup
+} from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import '../style.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -46,7 +56,7 @@ export default function Dashboard() {
     fetchTasks();
   }, []);
 
-  const handleTaskUpdate = async (taskId, isSubmitted, submissionFile) => {
+  const handleTaskUpdate = async (taskId, submissionStatus, submissionFile) => {
     try {
       const token = await auth.currentUser.getIdToken(true);
       const response = await fetch(
@@ -58,7 +68,7 @@ export default function Dashboard() {
             Authorization: `Bearer ${token}`
           },
           body: JSON.stringify({
-            isSubmitted, // task.isSubmitted
+            submissionStatus, // task.isSubmitted
             submissionFile // return current task.submissionCounter
           })
         }
@@ -135,9 +145,9 @@ function TaskCard({ task, handleOpenModal, profilePhoto }) {
         <Card.Text>{task.description}</Card.Text>
         <div className="mt-2 mb-0 text-sm">
           <Badge
-            bg={!task.status ? 'success' : 'secondary'}
+            bg={!task.isSubmitted ? 'success' : 'secondary'}
             className="ml-2 rounded-pill bg-opacity-30">
-            {!task.status ? 'Open' : 'Closed'}
+            {!task.isSubmitted ? 'In progress' : 'Closed'}
           </Badge>
         </div>
       </Card.Body>
@@ -152,51 +162,24 @@ function TaskCard({ task, handleOpenModal, profilePhoto }) {
 
 function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
   const [googleDocLink, setGoogleDocLink] = useState('');
-  const [isEditOn, setIsEditOn] = useState(false);
-  const [check, setCheck] = useState(task.status ? true : false);
-  const [userType, setUserType] = useState('');
-  const [taskClaimStatus, setTaskClaimStatus] = useState(task.student);
   const { currentUser, logout, currentName } = useAuth();
-  let displayName = currentName;
-
-  function handleStatus() {
-    setCheck(!check);
-    console.log(check);
-  }
-
-  function handleEdit() {
-    setIsEditOn(!isEditOn);
-    console.log(isEditOn);
-  }
-
-  function updateModalComponents() {
-    if (displayName.startsWith('student')) {
-      setUserType('student');
-    }
-    if (displayName.startsWith('company')) {
-      setUserType('company');
-      handleEdit();
-    }
-  }
+  const [submissionStatus, setSubmissionStatus] = useState(false);
 
   const validateLink = (link) => {
     const regex = /^https:\/\/docs\.google\.com\/.*\/d\/.+$/;
     return regex.test(link);
   };
 
-  async function handleStudentSubmit(taskId, isSubmitted) {
-    let submissioStatus;
+  async function handleStudentSubmit(taskId) {
     if (validateLink(googleDocLink)) {
-      const taskSubmissionRef = ref(storage, `taskSubmission/${currentUser.uid}`);
-      await uploadBytes(taskSubmissionRef, googleDocLink);
-      const submissionFile = await getDownloadURL(taskSubmissionRef);
-      await handleTaskUpdate(taskId, isSubmitted, submissionFile);
-    } else {
-      submissioStatus = `${(<p>invalid google doc file!</p>)}`;
+      await handleTaskUpdate(taskId, submissionStatus, googleDocLink);
+      onHide();
     }
   }
 
-  useEffect(() => updateModalComponents(), []);
+  useEffect(() => {
+    setSubmissionStatus(task.submissionStatus);
+  }, [task]);
 
   return (
     <Modal
@@ -216,22 +199,58 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
       <Modal.Body className="test">
         <h6>{task.description}</h6>
       </Modal.Body>
+
       <ModalFooter>
-        <Form.Group className="mb-3">
-          <Form.Label>Google Doc Link</Form.Label>
-          <Form.Control
-            type="text"
-            value={googleDocLink}
-            onChange={(event) => setGoogleDocLink(event.target.value)}
-            placeholder="Paste Google Doc link here"
-          />
-        </Form.Group>
+        <div>
+          Current Submission:
+          <a href={task.submissionLink}>{task.submissionLink ? 'here' : 'none'}</a>
+          <br />
+          Claimed by: {task.student ? `${task.student}` : 'none'}
+        </div>
+        {currentName.startsWith('student') && (
+          <Form.Group className="mb-3">
+            <Form.Label>Google Doc Link</Form.Label>
+            <Form.Control
+              type="text"
+              value={googleDocLink}
+              onChange={(event) => setGoogleDocLink(event.target.value)}
+              placeholder="Paste Google Doc link here"
+            />
+          </Form.Group>
+        )}
       </ModalFooter>
-      <ModalFooter>
-        <Button variant="primary" onClick={() => handleStudentSubmit(task.id, task.isSubmitted)}>
-          Submit
-        </Button>
-      </ModalFooter>
+      {currentName.startsWith('student') && (
+        <ModalFooter>
+          {!task.isSubmitted && (
+            <Form.Group>
+              <ToggleButtonGroup
+                className=" d-flex justify-content-center"
+                type="radio"
+                name="submissionStatus"
+                value={submissionStatus}
+                onChange={(value) => setSubmissionStatus(value)}>
+                <ToggleButton
+                  variant={submissionStatus === 'Complete' ? 'success' : 'outline-primary'}
+                  value="finished"
+                  onClick={
+                    submissionStatus === 'Complete'
+                      ? () => setSubmissionStatus(false)
+                      : () => setSubmissionStatus('Complete')
+                  }>
+                  {submissionStatus ? 'Completed' : 'Complete?'}
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Form.Group>
+          )}
+
+          <Button
+            variant="primary"
+            onClick={() => handleStudentSubmit(task.id)}
+            disabled={task.isSubmitted}>
+            {task.isSubmitted ? 'Submitted' : 'Update'}
+          </Button>
+        </ModalFooter>
+      )}
     </Modal>
   );
 }

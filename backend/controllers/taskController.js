@@ -20,7 +20,7 @@ const createTask = async (req, res) => {
     dateCreated: admin.firestore.FieldValue.serverTimestamp(),
     dateCompleted: null,
     createdBy: name,
-    isSubmitted: false,
+    submissionStatus: false,
     student: '',
     displayPhoto: picture,
   };
@@ -61,7 +61,7 @@ const getCurrentUserTasks = async (req, res) => {
     const tasksRef = db.collection('tasks');
     const snapshot = await tasksRef.where('student', '==', displayName).get();
     if (snapshot.empty) {
-      res.status(404).send('No matching tasks.');
+      return res.status(404).send('No matching tasks.');
     }
     const tasks = [];
     snapshot.forEach((doc) => {
@@ -75,7 +75,7 @@ const getCurrentUserTasks = async (req, res) => {
     const tasksRef = db.collection('tasks');
     const snapshot = await tasksRef.where('company', '==', displayName).get();
     if (snapshot.empty) {
-      res.status(404).send('No matching tasks.');
+      return res.status(404).send('No matching tasks.');
     }
     const tasks = [];
     snapshot.forEach((doc) => {
@@ -91,7 +91,7 @@ const updateStudentTask = async (req, res) => {
   // requires: displayName, taskId, isSubmitted, submissionFile
   const displayName = req.user.name;
   const taskId = req.params.id;
-  const { isSubmitted } = req.body;
+  const { submissionStatus } = req.body;
   let { submissionFile } = req.body;
   if (!displayName || !taskId) {
     return res.status(StatusCodes.BAD_REQUEST).json({
@@ -101,14 +101,20 @@ const updateStudentTask = async (req, res) => {
   if (!submissionFile) {
     submissionFile = null;
   }
+  const taskRef = db.collection('tasks').doc(taskId);
   if (displayName.startsWith('student')) {
     try {
-      const taskRef = db.collection('tasks').doc(taskId);
       await taskRef.update({
         submissionLink: submissionFile,
+        isSubmitted: submissionStatus,
         student: displayName.slice(8),
       });
-
+    } catch (error) {
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: 'Failed to update task', msg: error });
+    }
+    try {
       const task = await taskRef.get();
       if (!task.exists) {
         return res
@@ -120,7 +126,7 @@ const updateStudentTask = async (req, res) => {
     } catch (error) {
       res
         .status(StatusCodes.BAD_REQUEST)
-        .json({ error: 'Failed to update task', msg: error });
+        .json({ error: 'Failed to get task', msg: error });
     }
   } else {
     res

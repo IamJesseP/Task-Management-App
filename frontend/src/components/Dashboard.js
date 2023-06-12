@@ -120,8 +120,8 @@ function TaskCard({ task, handleOpenModal, profilePhoto }) {
         </Col>
         <Card.Text>{task.description}</Card.Text>
         <div className="mt-2 mb-0 text-sm">
-          <Badge bg={!task.status ? 'success' : 'secondary'} className="ml-2 rounded-pill bg-opacity-30">
-            {!task.status ? 'Open' : 'Closed'}
+          <Badge bg={!task.isSubmitted ? 'success' : 'secondary'} className="ml-2 rounded-pill bg-opacity-30">
+            {!task.isSubmitted ? 'Open' : 'Closed'}
           </Badge>
         </div>
       </Card.Body>
