@@ -10,6 +10,7 @@
     "firebase": "^9.22.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
+    "react-bootstrap-sidebar": "^0.0.1",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.12.0",
     "react-scripts": "5.0.1",
@@ -47,6 +48,6 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
-    "prettier": "^2.8.8"  
+    "prettier": "^2.8.8"
   }
 }

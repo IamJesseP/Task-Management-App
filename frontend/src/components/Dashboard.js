@@ -58,20 +58,23 @@ export default function Dashboard() {
   return (
     <div className="d-flex">
       <Navibar className="navbar" />
+
       <div className="content">
-        <div className="container-row" style={{ height: "100px"}}>
-          <h2 className="text-center">Marketplace</h2>
-          <ToggleButton
-            className="mb-2"
-            id="toggle-check"
-            type="checkbox"
-            variant="outline-primary"
-            checked={checked}
-            value="1"
-            onChange={(e) => setChecked(e.currentTarget.checked)}
-          >
-          Completed
-          </ToggleButton>
+        <div className='header'>
+          <div className="container-row" style={{ height: "100px"}}>
+            <h2 className="text-center mb-0">Marketplace</h2>
+            <ToggleButton
+              className="mb-2"
+              id="toggle-check"
+              type="checkbox"
+              variant="outline-primary"
+              checked={checked}
+              value="1"
+              onChange={(e) => setChecked(e.currentTarget.checked)}
+            >
+            Completed
+            </ToggleButton>
+          </div>
         </div>
         <div className="card-columns">
           {tasks.map((task) => (
@@ -86,6 +89,7 @@ export default function Dashboard() {
           )}
         </div>
       </div>
+
     </div>
   );
 }
