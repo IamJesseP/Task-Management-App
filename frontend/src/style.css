@@ -85,3 +85,10 @@ html, body, #root, .container {
 .createTaskButton {
   float: right;
 }
+
+#test {
+ 
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}

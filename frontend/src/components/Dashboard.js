@@ -13,16 +13,12 @@ export default function Dashboard() {
   const [checked, setChecked] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { currentUser, logout, currentName, userPhotoURL } = useAuth();
-  let photoUrl = userPhotoURL;
- console.log(userPhotoURL);
   
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
+  
   const fetchTasks = async () => {
     try {
       await currentUser.reload()
@@ -43,7 +39,9 @@ export default function Dashboard() {
     }
   };
 
-
+  useEffect(() => {
+    fetchTasks();
+}, [refreshTrigger]);
 
   const handleOpenModal = (task) => {
     setSelectedTask(task);
@@ -85,6 +83,7 @@ export default function Dashboard() {
               task={selectedTask}
               show={isModalOpen}
               onHide={handleCloseModal}
+              setRefreshTrigger={setRefreshTrigger}
             />
           )}
         </div>
@@ -106,12 +105,15 @@ function TaskCard({ task, handleOpenModal, profilePhoto }) {
           <span className="h6 font-semibold mb-0">{task.title}</span>
         </Col>
         <Card.Text>{task.description}</Card.Text>
+      </Card.Body>
+        <Card.Footer>
+
         <div className="mt-2 mb-0 text-sm">
-          <Badge bg={!task.submissionStatus ? 'success' : 'secondary'} className="ml-2 rounded-pill bg-opacity-30">
-            {!task.submissionStatus ? 'Open' : 'Closed'}
+          <Badge bg={task.student ? 'secondary' : 'success'} className="ml-2 rounded-pill bg-opacity-30">
+            {task.student ? 'Claimed' : 'Open'}
           </Badge>
         </div>
-      </Card.Body>
+        </Card.Footer>
       {/* <Card.Footer>
         <Badge bg={!task.status ? 'success' : 'secondary'} className="ml-2">
           {!task.status ? 'Open' : 'Closed'}
@@ -121,7 +123,7 @@ function TaskCard({ task, handleOpenModal, profilePhoto }) {
   );
 }
 
-function TaskDetailModal({ task, show, onHide }) {
+function TaskDetailModal({ task, show, onHide, setRefreshTrigger }) {
   const [isEditOn, setIsEditOn] = useState(false)
   const [check, setCheck] = useState(task.status ? true : false)
   const [userType, setUserType] = useState('')
@@ -181,6 +183,7 @@ function TaskDetailModal({ task, show, onHide }) {
 
   const handleUpdateAndClose = async (taskId, submissionStatus) => {
     await handleTaskUpdate(taskId, submissionStatus)
+    setRefreshTrigger(prev => !prev)
   };
   useEffect(()=>updateModalComponents(), [])
 
@@ -200,10 +203,8 @@ function TaskDetailModal({ task, show, onHide }) {
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">{task.title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body className='test'>
+      <Modal.Body>
         <h6>{task.description}</h6>
-        
-        
       </Modal.Body>
       <Modal.Footer>
     { task.student && <p>Being worked on by: {task.student }</p>}
