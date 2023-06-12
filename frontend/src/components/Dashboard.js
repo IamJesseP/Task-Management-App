@@ -58,20 +58,10 @@ export default function Dashboard() {
   return (
     <div className="d-flex">
       <Navibar className="navbar" />
-
       <div className="content">
         <div className="container-row" style={{ height: "115px"}}>
           <h2 className="text-center">Marketplace</h2>
           <div className='filterButton'>
-          {/* <Button
-            className="filterButton"
-            variant={filterVariant}
-            checked={checked}
-            value="1"
-            onClick={handleFilter}
-          >
-          Filter: {filterTasks}
-          </Button> */}
           <ToggleButtonGroup
             className="mb-3 d-flex justify-content-center"
             type="radio"

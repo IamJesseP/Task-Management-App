@@ -99,7 +99,7 @@ export default function Dashboard() {
     <div className="d-flex">
       <Navibar className="navbar" />
       <div className="content">
-        <div className="d-flex justify-content-center align-items-center flex-column">
+        <div className="container-row" style={{ height: '85px' }}>
           <h2 className="text-center mb-4">My Tasks</h2>
           {currentName.startsWith('company') && <TaskCreateModal fetchTasks={fetchTasks} />}
         </div>

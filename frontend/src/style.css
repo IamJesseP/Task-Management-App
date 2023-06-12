@@ -6,6 +6,11 @@ html, body, #root, .container {
   background-color: #f5f9fc;
 }
 
+.logo {
+  background-image: linear-gradient(0deg, rgba(77,54,208,1) 0%, rgba(132,116,254,1) 100%);
+  -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 .navbar {
   display: flex;
   flex-direction: column;
