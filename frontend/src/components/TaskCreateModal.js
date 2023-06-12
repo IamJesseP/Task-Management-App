@@ -14,17 +14,20 @@ function TaskCreateModal({ fetchTasks }) {
   const handleSubmit = async () => {
     try {
       const token = await currentUser.getIdToken(true);
-      const response = await fetch(`http://localhost:4000/dashboard/tasks`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          title: taskTitle.current.value,
-          description: taskDescription.current.value
-        })
-      });
+      const response = await fetch(
+        `https://tech-incubator-task-api.herokuapp.com/dashboard/tasks`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            title: taskTitle.current.value,
+            description: taskDescription.current.value
+          })
+        }
+      );
       if (!response.ok) {
         console.log('Error, response not okay');
       }

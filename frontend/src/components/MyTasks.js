@@ -34,13 +34,16 @@ export default function Dashboard() {
       await currentUser.reload();
       const token = await currentUser.getIdToken(true);
       console.log(token);
-      const response = await fetch('http://localhost:4000/dashboard/tasks/showMyTasks', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+      const response = await fetch(
+        'https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/showMyTasks',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }
         }
-      });
+      );
       const data = await response.json();
       console.log(data);
       setTasks(data);
@@ -58,7 +61,7 @@ export default function Dashboard() {
     try {
       const token = await auth.currentUser.getIdToken(true);
       const response = await fetch(
-        `http://localhost:4000/dashboard/tasks/studentUpdate/${taskId}`,
+        `https://tech-incubator-task-api.herokuapp.com/tasks/studentUpdate/${taskId}`,
         {
           method: 'PATCH',
           headers: {

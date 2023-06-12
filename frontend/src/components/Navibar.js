@@ -10,7 +10,7 @@ const auth = getAuth();
 function Navibar() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { currentName, currentUser, logout, userPhotoURL } = useAuth();
+  const { currentName, logout } = useAuth();
 
   let displayName = currentName;
   if (currentName.startsWith('student') || currentName.startsWith('company')) {

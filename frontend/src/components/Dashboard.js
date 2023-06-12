@@ -22,13 +22,16 @@ export default function Dashboard() {
     try {
       await currentUser.reload();
       const token = await currentUser.getIdToken(true);
-      const response = await fetch('http://localhost:4000/dashboard/tasks', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+      const response = await fetch(
+        'https://tech-incubator-task-api.herokuapp.com/dashboard/tasks',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }
         }
-      });
+      );
       const data = await response.json();
       await currentUser.reload();
       navigate('/');
@@ -208,7 +211,7 @@ function TaskDetailModal({ task, show, onHide, setRefreshTrigger }) {
     try {
       const token = await auth.currentUser.getIdToken(true);
       const response = await fetch(
-        `http://localhost:4000/dashboard/tasks/studentUpdate/${taskId}`,
+        `https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/studentUpdate/${taskId}`,
         {
           method: 'PATCH',
           headers: {
