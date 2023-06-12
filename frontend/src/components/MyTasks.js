@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   Button,
@@ -10,14 +10,14 @@ import {
   Form,
   ModalFooter,
   ToggleButton,
-  ToggleButtonGroup,
-} from "react-bootstrap";
-import { useAuth } from "../context/AuthContext";
-import "../style.css";
-import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase";
-import Navibar from "./Navibar";
-import TaskCreateModal from "./TaskCreateModal";
+  ToggleButtonGroup
+} from 'react-bootstrap';
+import { useAuth } from '../context/AuthContext';
+import '../style.css';
+import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase';
+import Navibar from './Navibar';
+import TaskCreateModal from './TaskCreateModal';
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -27,29 +27,26 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const { currentUser, logout, currentName, userPhotoURL } = useAuth();
 
-  console.log(userPhotoURL);
-
   const fetchTasks = async () => {
     try {
       await currentUser.reload();
       const token = await currentUser.getIdToken(true);
-      console.log(token);
+
       const response = await fetch(
-        "https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/showMyTasks",
+        'https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/showMyTasks',
         {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          }
         }
       );
       const data = await response.json();
-      console.log(data);
+
       setTasks(data);
-      console.log(tasks.status);
     } catch (error) {
-      console.error("Error fetching tasks:", error);
+      console.error('Error fetching tasks:', error);
     }
   };
 
@@ -61,30 +58,30 @@ export default function Dashboard() {
     try {
       const token = await auth.currentUser.getIdToken(true);
       const response = await fetch(
-        `https://tech-incubator-task-api.herokuapp.com/tasks/studentUpdate/${taskId}`,
+        `https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/studentUpdate/${taskId}`,
         {
-          method: "PATCH",
+          method: 'PATCH',
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
           },
           body: JSON.stringify({
             submissionStatus, // task.submissionStatus
-            submissionFile, // return current task.submissionCounter
-          }),
+            submissionFile // return current task.submissionCounter
+          })
         }
       );
 
       if (!response.ok) {
         console.log(response);
-        throw new Error("Network response was not ok");
+        throw new Error('Network response was not ok');
       }
 
       await fetchTasks();
       const updatedTask = await response.json();
       return updatedTask;
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
     }
   };
 
@@ -112,33 +109,29 @@ export default function Dashboard() {
         <ToggleButton
           variant="primary"
           style={{
-            maxWidth: "250px",
-            position: "relative",
-            left: "20px",
-            top: "20px",
-            zIndex: "100",
+            maxWidth: '250px',
+            position: 'relative',
+            left: '20px',
+            top: '20px',
+            zIndex: '100'
           }}
-          onClick={Toggle}
-        >
+          onClick={Toggle}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
             fill="currentColor"
             className="bi bi-list"
-            viewBox="0 0 16 16"
-          >
+            viewBox="0 0 16 16">
             <path
               fillRule="evenodd"
               d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
             />
           </svg>
         </ToggleButton>
-        <div className="container-row" style={{ height: "100px" }}>
+        <div className="container-row" style={{ height: '100px' }}>
           <h2 className="text-center mb-2">My Tasks</h2>
-          {currentName.startsWith("company") && (
-            <TaskCreateModal fetchTasks={fetchTasks} />
-          )}
+          {currentName.startsWith('company') && <TaskCreateModal fetchTasks={fetchTasks} />}
         </div>
         <div className="card-columns">
           {tasks.map((task) => (
@@ -167,23 +160,20 @@ function TaskCard({ task, handleOpenModal }) {
   return (
     <Card
       className="mb-3 card2"
-      style={{ borderRadius: "20px" }}
-      onClick={() => handleOpenModal(task)}
-    >
+      style={{ borderRadius: '20px' }}
+      onClick={() => handleOpenModal(task)}>
       <Card.Img
         variant="top"
         src={task.displayPhoto}
         style={{
-          borderTopLeftRadius: "20px",
-          borderTopRightRadius: "20px",
-          height: "100px",
+          borderTopLeftRadius: '20px',
+          borderTopRightRadius: '20px',
+          height: '100px'
         }}
       />
       <Card.Body>
         <Col>
-          <span className="h6 font-semibold text-muted text-sm d-block mb-2">
-            {task.company}
-          </span>
+          <span className="h6 font-semibold text-muted text-sm d-block mb-2">{task.company}</span>
           <span className="h6 font-semibold mb-0">{task.title}</span>
         </Col>
         <Card.Text>{task.description}</Card.Text>
@@ -191,12 +181,10 @@ function TaskCard({ task, handleOpenModal }) {
       <Card.Footer>
         <div className="mt-2 mb-0 text-sm">
           <Badge
-            bg={!task.submissionStatus ? "success" : "secondary"}
-            className="ml-2 rounded-pill bg-opacity-30"
-          >
-            {task.student &&
-              (!task.submissionStatus ? "In progress" : "Closed")}
-            {!task.student && "Open"}
+            bg={!task.submissionStatus ? 'success' : 'secondary'}
+            className="ml-2 rounded-pill bg-opacity-30">
+            {task.student && (!task.submissionStatus ? 'In progress' : 'Closed')}
+            {!task.student && 'Open'}
           </Badge>
         </div>
       </Card.Footer>
@@ -205,7 +193,7 @@ function TaskCard({ task, handleOpenModal }) {
 }
 
 function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
-  const [googleDocLink, setGoogleDocLink] = useState("");
+  const [googleDocLink, setGoogleDocLink] = useState('');
   const { currentName } = useAuth();
   const [submissionStatus, setSubmissionStatus] = useState(false);
   const [hasFile, setHasFile] = useState(false);
@@ -213,7 +201,7 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
   const validateLink = (link) => {
     const regex = /^https:\/\/docs\.google\.com\/.*\/d\/.+$/;
     const test = regex.test(link);
-    test ? setHasFile(true) : setHasFile("error");
+    test ? setHasFile(true) : setHasFile('error');
     return test;
   };
 
@@ -236,17 +224,12 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
       aria-labelledby="contained-modal-title-vcenter"
       className="pt-20px"
       backdrop="static"
-      centered
-    >
+      centered>
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Company: {task.company}
-        </Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">Company: {task.company}</Modal.Title>
       </Modal.Header>
       <Modal.Header>
-        <Modal.Title id="contained-modal-title-vcenter">
-          {task.title}
-        </Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">{task.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <h6>{task.description}</h6>
@@ -255,13 +238,11 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
       <ModalFooter id="myTaskAssignment">
         <div>
           Current Submission:
-          <a href={task.submissionLink}>
-            {task.submissionLink ? "here" : " none"}
-          </a>
+          <a href={task.submissionLink}>{task.submissionLink ? 'here' : ' none'}</a>
           <br />
-          Claimed by: {task.student ? `${task.student}` : "none"}
+          Claimed by: {task.student ? `${task.student}` : 'none'}
         </div>
-        {currentName.startsWith("student") && (
+        {currentName.startsWith('student') && (
           <Form.Group className="mb-3">
             <Form.Label>Google Doc Link</Form.Label>
             <Form.Control
@@ -274,8 +255,8 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
               placeholder="Paste Google Doc link here"
             />
             <div>
-              {hasFile === "error" && (
-                <Badge bg={"danger"} className="mt-2">
+              {hasFile === 'error' && (
+                <Badge bg={'danger'} className="mt-2">
                   Please provide a valid google doc link.
                 </Badge>
               )}
@@ -283,7 +264,7 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
           </Form.Group>
         )}
       </ModalFooter>
-      {currentName.startsWith("student") && (
+      {currentName.startsWith('student') && (
         <ModalFooter>
           {!task.submissionStatus && (
             <Form.Group>
@@ -292,22 +273,16 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
                 type="radio"
                 name="submissionStatus"
                 value={submissionStatus}
-                onChange={(value) => setSubmissionStatus(value)}
-              >
+                onChange={(value) => setSubmissionStatus(value)}>
                 <ToggleButton
-                  variant={
-                    submissionStatus === "Complete"
-                      ? "success"
-                      : "outline-primary"
-                  }
+                  variant={submissionStatus === 'Complete' ? 'success' : 'outline-primary'}
                   value="finished"
                   onClick={
-                    submissionStatus === "Complete"
+                    submissionStatus === 'Complete'
                       ? () => setSubmissionStatus(false)
-                      : () => setSubmissionStatus("Complete")
-                  }
-                >
-                  {submissionStatus ? "Completed" : "Complete?"}
+                      : () => setSubmissionStatus('Complete')
+                  }>
+                  {submissionStatus ? 'Completed' : 'Complete?'}
                 </ToggleButton>
               </ToggleButtonGroup>
             </Form.Group>
@@ -316,11 +291,8 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
           <Button
             variant="primary"
             onClick={() => handleStudentSubmit(task.id)}
-            disabled={
-              task.submissionStatus || hasFile === false || hasFile === "error"
-            }
-          >
-            {task.submissionStatus ? "Submitted" : "Update"}
+            disabled={task.submissionStatus || hasFile === false || hasFile === 'error'}>
+            {task.submissionStatus ? 'Submitted' : 'Update'}
           </Button>
         </ModalFooter>
       )}
