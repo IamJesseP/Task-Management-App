@@ -80,9 +80,15 @@ html, body, #root, .container {
   float: right;
 }
 
-#test {
+#mytasksAssignment {
  
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+}
+
+.filterButton {
+  display: flex;
+  justify-content: center;
+  
 }

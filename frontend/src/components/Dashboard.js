@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Alert, ListGroup, Badge, Modal, Form, Container, Col, Row, Navbar, Nav, ToggleButton } from 'react-bootstrap';
+import { Card, Button, Alert, ListGroup, Badge, Modal, Form, Container, Col, Row, Navbar, Nav, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import '../style.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -14,6 +14,8 @@ export default function Dashboard() {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(false);
+  const [filterTasks, setFilterTasks] = useState('all')
+  const [filterVariant, setFilterVariant] = useState('primary')
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const { currentUser, logout, currentName, userPhotoURL } = useAuth();
@@ -51,7 +53,7 @@ export default function Dashboard() {
   const handleCloseModal = () => {
     setModalOpen(false);
   };
-  
+ 
 
   return (
     <div className="d-flex">
@@ -59,21 +61,52 @@ export default function Dashboard() {
       <div className="content">
         <div className="container-row" style={{ height: "100px"}}>
           <h2 className="text-center">Marketplace</h2>
-          <ToggleButton
-            className="mb-2"
-            id="toggle-check"
-            type="checkbox"
-            variant="outline-primary"
+          <div className='filterButton'>
+          {/* <Button
+            className="filterButton"
+            variant={filterVariant}
             checked={checked}
             value="1"
-            onChange={(e) => setChecked(e.currentTarget.checked)}
+            onClick={handleFilter}
           >
-          Completed
-          </ToggleButton>
+          Filter: {filterTasks}
+          </Button> */}
+          <ToggleButtonGroup
+            className="mb-3 d-flex justify-content-center"
+            type="radio"
+            name="filterTasks"
+            value={filterTasks}
+            onChange={(value) => setFilterTasks(value)}>
+            <ToggleButton
+              variant={filterVariant === 'all' ? 'primary' : 'outline-primary'}
+              value="all"
+              onClick={() => setFilterTasks('all')}>
+              All
+            </ToggleButton>
+            <ToggleButton
+              variant={filterVariant === 'open' ? 'primary' : 'outline-primary'}
+              value="open"
+              onClick={() => setFilterTasks('open')}>
+              Open
+            </ToggleButton>
+            <ToggleButton
+              variant={filterVariant === 'claimed' ? 'primary' : 'outline-primary'}
+              value="claimed"
+              onClick={() => setFilterTasks('claimed')}>
+              Claimed
+            </ToggleButton>
+          </ToggleButtonGroup>
+          </div>
         </div>
         <div className="card-columns">
-          {tasks.map((task) => (
+          {filterTasks === 'all'&& tasks.map((task) => (
             <TaskCard key={task.id} task={task} handleOpenModal={handleOpenModal} profilePhoto={userPhotoURL} />
+          ))}
+          {filterTasks === 'open'&& tasks.map((task) => (
+            !task.student && <TaskCard key={task.id} task={task} handleOpenModal={handleOpenModal} profilePhoto={userPhotoURL} />
+          ))}
+          {filterTasks === 'claimed'&& tasks.map((task) => (
+            task.student && <TaskCard key={task.id} task={task} handleOpenModal={handleOpenModal} profilePhoto={userPhotoURL} />
           ))}
           {isModalOpen && selectedTask && (
             <TaskDetailModal
