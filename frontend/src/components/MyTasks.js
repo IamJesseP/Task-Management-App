@@ -68,7 +68,7 @@ export default function Dashboard() {
             Authorization: `Bearer ${token}`
           },
           body: JSON.stringify({
-            submissionStatus, // task.isSubmitted
+            submissionStatus, // task.submissionStatus
             submissionFile // return current task.submissionCounter
           })
         }
@@ -143,14 +143,17 @@ function TaskCard({ task, handleOpenModal, profilePhoto }) {
           <span className="h6 font-semibold mb-0">{task.title}</span>
         </Col>
         <Card.Text>{task.description}</Card.Text>
+      </Card.Body>
+      <Card.Footer>
         <div className="mt-2 mb-0 text-sm">
           <Badge
-            bg={!task.isSubmitted ? 'success' : 'secondary'}
+            bg={!task.submissionStatus ? 'success' : 'secondary'}
             className="ml-2 rounded-pill bg-opacity-30">
-            {!task.isSubmitted ? 'In progress' : 'Closed'}
+            {task.student && (!task.submissionStatus ? 'In progress' : 'Closed')}
+            {!task.student && 'Open'}
           </Badge>
         </div>
-      </Card.Body>
+      </Card.Footer>
       {/* <Card.Footer>
         <Badge bg={!task.status ? 'success' : 'secondary'} className="ml-2">
           {!task.status ? 'Open' : 'Closed'}
@@ -196,11 +199,11 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">{task.title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="test">
+      <Modal.Body>
         <h6>{task.description}</h6>
       </Modal.Body>
 
-      <ModalFooter>
+      <ModalFooter id="test">
         <div>
           Current Submission:
           <a href={task.submissionLink}>{task.submissionLink ? 'here' : ' none'}</a>
@@ -221,7 +224,7 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
       </ModalFooter>
       {currentName.startsWith('student') && (
         <ModalFooter>
-          {!task.isSubmitted && (
+          {!task.submissionStatus && (
             <Form.Group>
               <ToggleButtonGroup
                 className=" d-flex justify-content-center"
@@ -246,8 +249,8 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
           <Button
             variant="primary"
             onClick={() => handleStudentSubmit(task.id)}
-            disabled={task.isSubmitted}>
-            {task.isSubmitted ? 'Submitted' : 'Update'}
+            disabled={task.submissionStatus}>
+            {task.submissionStatus ? 'Submitted' : 'Update'}
           </Button>
         </ModalFooter>
       )}
