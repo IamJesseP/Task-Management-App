@@ -104,8 +104,6 @@ function Navibar() {
               </a>
             </li>
             <hr className="bar"></hr>
-          </ul>
-          <ul className="navbar-nav flex-column account">
             <li className="nav-item mt-auto">
               <NavDropdown title="Profile" id="basic-nav-dropdown" style={{ color: '#0d6dfd' }}>
                 <NavDropdown.Item>{displayName}</NavDropdown.Item>
