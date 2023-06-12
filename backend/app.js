@@ -10,13 +10,16 @@ const admin = require('./db/firebaseAdmin');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const cors = require('cors');
+
 var corsOptions = {
-  origin: 'https://task-management-app-nine-beryl.vercel.app/', //  frontend domain
-  optionsSuccessStatus: 200 
+  origin: 'https://task-management-app-nine-beryl.vercel.app', //  frontend domain
+  optionsSuccessStatus: 200,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'] 
 }
 
-app.use(helmet());
 app.use(cors(corsOptions));
+app.use(helmet());
 app.use(xss());
 
 app.use(express.json());
