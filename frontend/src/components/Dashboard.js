@@ -58,6 +58,7 @@ export default function Dashboard() {
   return (
     <div className="d-flex">
       <Navibar className="navbar" />
+
       <div className="content">
         <div className="container-row" style={{ height: "100px"}}>
           <h2 className="text-center">Marketplace</h2>
@@ -118,6 +119,7 @@ export default function Dashboard() {
           )}
         </div>
       </div>
+
     </div>
   );
 }
