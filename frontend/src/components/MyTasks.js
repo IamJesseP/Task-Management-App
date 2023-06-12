@@ -10,7 +10,8 @@ import {
   Form,
   ModalFooter,
   ToggleButton,
-  ToggleButtonGroup
+  ToggleButtonGroup,
+  Alert
 } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import '../style.css';
@@ -171,7 +172,9 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
 
   const validateLink = (link) => {
     const regex = /^https:\/\/docs\.google\.com\/.*\/d\/.+$/;
-    return regex.test(link);
+    const test = regex.test(link);
+    test ? setHasFile(true) : setHasFile('error');
+    return test;
   };
 
   async function handleStudentSubmit(taskId) {
@@ -204,7 +207,7 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
         <h6>{task.description}</h6>
       </Modal.Body>
 
-      <ModalFooter id="test">
+      <ModalFooter id="myTaskAssignment">
         <div>
           Current Submission:
           <a href={task.submissionLink}>{task.submissionLink ? 'here' : ' none'}</a>
@@ -218,11 +221,18 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
               type="text"
               value={googleDocLink}
               onChange={(event) => {
+                validateLink(event.target.value);
                 setGoogleDocLink(event.target.value);
-                setHasFile((prev) => !prev);
               }}
               placeholder="Paste Google Doc link here"
             />
+            <div>
+              {hasFile === 'error' && (
+                <Badge bg={'danger'} className="mt-2">
+                  Please provide a valid google doc link.
+                </Badge>
+              )}
+            </div>
           </Form.Group>
         )}
       </ModalFooter>
@@ -253,7 +263,7 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
           <Button
             variant="primary"
             onClick={() => handleStudentSubmit(task.id)}
-            disabled={task.submissionStatus || !hasFile}>
+            disabled={task.submissionStatus || hasFile === false || hasFile === 'error'}>
             {task.submissionStatus ? 'Submitted' : 'Update'}
           </Button>
         </ModalFooter>
