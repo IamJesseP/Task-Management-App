@@ -36,47 +36,20 @@ function Navibar() {
 
   return (
     <>
-      {/* <Navbar
-        bg="white"
-        expand="md"
-        className="w-100"
-        style={{ boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
-        <Container>
-          <Navbar.Brand href="/" style={{ float: 'left', fontWeight: 'bold' }}>
-            Dashboard
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link href="#home" style={{ color: '#333', marginRight: '1rem' }}>
-                Marketplace
-              </Nav.Link>
-              <Nav.Link href="#link" style={{ color: '#333', marginRight: '1rem' }}>
-                My Tasks
-              </Nav.Link>
-              <NavDropdown title="Profile" id="basic-nav-dropdown" style={{ color: '#333' }}>
-                <NavDropdown.Item>{`${displayName}`}</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.1">Settings</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item onClick={handleLogout}>Log out</NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar> */}
       <nav
-        className="navbar navbar-expand-md navbar-vertical sticky-top"
-        style={{ boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
-        <div className="container-row">
-          <button
-            className="navbar-toggler"
-            type="button"
-            onClick={handleToggleSidebar}
-            aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <ul className={`navbar-nav flex-column my-1 ${isSidebarOpen ? 'show' : ''}`}>
+        className={`navbar navbar-expand-md navbar-vertical sticky-top ${
+          isSidebarOpen ? 'sidebar-open' : ''
+        }`}>
+        <button
+          className="navbar-toggler"
+          type="button"
+          onClick={handleToggleSidebar}
+          aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        {/* <div className="container-row"> */}
+        <div className={`navbar-collapse ${isSidebarOpen ? 'show' : ''}`}>
+          <ul className="navbar-nav flex-column my-1">
             <li className="nav-item">
               <Nav.Link className="nav-link" href="#">
                 <svg
@@ -125,10 +98,10 @@ function Navibar() {
               </a>
             </li>
             {/* <li className="nav-item">
-              <a className="nav-link" href="#">
-                <i className="bi bi-bookmarks"></i> Collections
-              </a>
-            </li> */}
+            <a className="nav-link" href="#">
+              <i className="bi bi-bookmarks"></i> Collections
+            </a>
+          </li> */}
             <li className="nav-item">
               <a className="nav-link" href="#">
                 <svg
@@ -164,11 +137,7 @@ function Navibar() {
                   viewBox="0 0 16 16">
                   <path
                     fillRule="evenodd"
-                    d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"
-                  />
-                  <path
-                    fillRule="evenodd"
-                    d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"
+                    d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2ZM1 8a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1h-10A.5.5 0 0 1 1 8ZM8 12a.5.5 0 0 0-.5.5v1.5a.5.5 0 0 0 1 0V12.5A.5.5 0 0 0 8 12Z"
                   />
                 </svg>{' '}
                 Logout
@@ -176,7 +145,9 @@ function Navibar() {
             </li>
           </ul>
         </div>
+        {/* </div> */}
       </nav>
+      <div className={`overlay ${isSidebarOpen ? 'show' : ''}`} onClick={handleToggleSidebar}></div>
     </>
   );
 }

@@ -121,12 +121,8 @@ export default function Dashboard() {
 function TaskCard({ task, handleOpenModal, profilePhoto }) {
   return (
     <Card className="mb-3 card2" style={{ borderRadius: "20px" }} onClick={() => handleOpenModal(task)}>
-      <Card.Body>
-        <Col>
-          <span className="h6 font-semibold text-muted text-sm d-block mb-2">
-            {task.displayPhoto && <img src={task.displayPhoto} width={'100px'}></img>}
-          </span>
-        </Col>
+        <Card.Img variant="top" src={task.displayPhoto}  style={{ borderTopLeftRadius: '20px', borderTopRightRadius: '20px', height: '100px' }}/>
+        <Card.Body>
         <Col>
           <span className="h6 font-semibold text-muted text-sm d-block mb-2">
           {task.company}
