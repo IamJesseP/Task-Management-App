@@ -167,6 +167,7 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
   const [googleDocLink, setGoogleDocLink] = useState('');
   const { currentUser, logout, currentName } = useAuth();
   const [submissionStatus, setSubmissionStatus] = useState(false);
+  const [hasFile, setHasFile] = useState(false);
 
   const validateLink = (link) => {
     const regex = /^https:\/\/docs\.google\.com\/.*\/d\/.+$/;
@@ -216,7 +217,10 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
             <Form.Control
               type="text"
               value={googleDocLink}
-              onChange={(event) => setGoogleDocLink(event.target.value)}
+              onChange={(event) => {
+                setGoogleDocLink(event.target.value);
+                setHasFile((prev) => !prev);
+              }}
               placeholder="Paste Google Doc link here"
             />
           </Form.Group>
@@ -249,7 +253,7 @@ function TaskDetailModal({ task, show, onHide, handleTaskUpdate }) {
           <Button
             variant="primary"
             onClick={() => handleStudentSubmit(task.id)}
-            disabled={task.submissionStatus}>
+            disabled={task.submissionStatus || !hasFile}>
             {task.submissionStatus ? 'Submitted' : 'Update'}
           </Button>
         </ModalFooter>
