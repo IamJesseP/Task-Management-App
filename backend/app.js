@@ -10,6 +10,7 @@ const admin = require("./db/firebaseAdmin");
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const cors = require("cors");
+const expresLimiter = require('express-rate-limit');
 
 var corsOptions = {
   origin: "https://task-management-app-nine-beryl.vercel.app", //  frontend domain
@@ -21,6 +22,7 @@ var corsOptions = {
 app.use(cors(corsOptions));
 app.use(helmet());
 app.use(xss());
+app.use(expresLimiter())
 
 app.use(express.json());
 app.use(express.static("./public"));
