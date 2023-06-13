@@ -1,0 +1,23 @@
+{
+  "name": "task-management-app",
+  "version": "1.0.0",
+  "description": "task-mngmt",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "standard-version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IamJesseP/Task-Management-App.git"
+  },
+  "author": "Jesse, Henry",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IamJesseP/Task-Management-App/issues"
+  },
+  "homepage": "https://github.com/IamJesseP/Task-Management-App#readme",
+  "devDependencies": {
+    "standard-version": "^9.5.0"
+  }
+}
