@@ -104,3 +104,9 @@ The application's frontend is deployed on Vercel and the backend is deployed on 
   
  **Programming Best Practices**
 
+
+### TODOS:
+* Update profile after registration
+* Delete task frontend
+* Landing page
+* Responsiveness
