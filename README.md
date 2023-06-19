@@ -1,5 +1,5 @@
 # Task-Management-App
-A fullstack application written with Nodejs, Expressjs, and Firebase. This full-stack application aims to create an 
+A fullstack application written with React, Nodejs, Expressjs, and Firebase. This full-stack application aims to create an 
 interface where users can view, create, and manage tasks, enhancing overall productivity and organization. The 
 application leverages Node.js for backend and React for frontend. Data is persistently stored using Firebase.
 
