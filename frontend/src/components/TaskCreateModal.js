@@ -15,8 +15,8 @@ function TaskCreateModal({ fetchTasks }) {
     try {
       const token = await currentUser.getIdToken(true);
       const response = await fetch(
-        // `https://tech-incubator-task-api.herokuapp.com/dashboard/tasks`,
-        'http://localhost:4000/dashboard/tasks',
+        `https://tech-incubator-task-api.herokuapp.com/dashboard/tasks`,
+        // 'http://localhost:4000/dashboard/tasks',
         {
           method: 'POST',
           headers: {

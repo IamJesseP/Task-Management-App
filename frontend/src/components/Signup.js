@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, updateProfile } from 'firebase/auth';
 import { storage } from '../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import '../home.css';
 
 export default function Signup() {
   // form inputs
@@ -51,7 +52,7 @@ export default function Signup() {
         photoURL: profilePicURL
       });
       await user.reload();
-      navigate('/');
+      navigate('/dashboard');
     } catch (error) {
       setError('Failed to create an account');
     }
@@ -60,71 +61,80 @@ export default function Signup() {
   }
 
   return (
-    <div
-      className="d-flex"
-      style={{
-        minHeight: '100vh'
-      }}>
-      <Card
-        className="d-flex align-items-center justify-content-center"
-        style={{ minHeight: '20vh', margin: 'auto', maxWidth: '400px' }}>
-        <Card.Body>
-          <h2 className="text-center mb-4">Sign Up</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
-          <ToggleButtonGroup
-            className="mb-3 d-flex justify-content-center"
-            type="radio"
-            name="accountType"
-            value={accountType}
-            onChange={(value) => setAccountType(value)}>
-            <ToggleButton
-              variant={accountType === 'student' ? 'primary' : 'outline-primary'}
-              value="student"
-              onClick={() => setAccountType('student')}>
-              Student
-            </ToggleButton>
-            <ToggleButton
-              variant={accountType === 'company' ? 'primary' : 'outline-primary'}
-              value="company"
-              onClick={() => setAccountType('company')}>
-              Company
-            </ToggleButton>
-          </ToggleButtonGroup>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formFile" className="mb-3">
-              <Form.Label>Profile Picture</Form.Label>
-              <Form.Control
-                type="file"
-                onChange={(e) => setProfilePicFile(e.target.files[0])}
-                accept="image/*"
-                required
-              />
-            </Form.Group>
-            <Form.Group id="userName">
-              <Form.Label>{accountType === 'student' ? 'Student Name' : 'Company Name'}</Form.Label>
-              <Form.Control type="text" ref={userNameRef} required />
-            </Form.Group>
-            <Form.Group id="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" ref={emailRef} required />
-            </Form.Group>
-            <Form.Group id="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" ref={passwordRef} required />
-            </Form.Group>
-            <Form.Group id="password-confirm">
-              <Form.Label>Password Confirmation</Form.Label>
-              <Form.Control type="password" ref={passwordConfirmRef} required />
-            </Form.Group>
-            <Button disabled={loading} className="w-100 mt-4 mb-4" type="submit">
-              Sign Up
-            </Button>
-          </Form>
-        </Card.Body>
-        <div className=" text-center d-flex" style={{ marginBottom: '-32px' }}>
-          Already have an account? <Link to="/login">Log In</Link>
-        </div>
-      </Card>
-    </div>
+    <>
+      <nav className="home-nav">
+        <Link to="/" className="nav-item-left">
+          Tech Incubator
+        </Link>
+      </nav>
+      <div
+        className="d-flex"
+        style={{
+          minHeight: '100vh'
+        }}>
+        <Card
+          className="d-flex align-items-center justify-content-center"
+          style={{ minHeight: '20vh', margin: 'auto', maxWidth: '400px' }}>
+          <Card.Body>
+            <h2 className="text-center mb-4">Sign Up</h2>
+            {error && <Alert variant="danger">{error}</Alert>}
+            <ToggleButtonGroup
+              className="mb-3 d-flex justify-content-center"
+              type="radio"
+              name="accountType"
+              value={accountType}
+              onChange={(value) => setAccountType(value)}>
+              <ToggleButton
+                variant={accountType === 'student' ? 'primary' : 'outline-primary'}
+                value="student"
+                onClick={() => setAccountType('student')}>
+                Student
+              </ToggleButton>
+              <ToggleButton
+                variant={accountType === 'company' ? 'primary' : 'outline-primary'}
+                value="company"
+                onClick={() => setAccountType('company')}>
+                Company
+              </ToggleButton>
+            </ToggleButtonGroup>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="formFile" className="mb-3">
+                <Form.Label>Profile Picture</Form.Label>
+                <Form.Control
+                  type="file"
+                  onChange={(e) => setProfilePicFile(e.target.files[0])}
+                  accept="image/*"
+                  required
+                />
+              </Form.Group>
+              <Form.Group id="userName">
+                <Form.Label>
+                  {accountType === 'student' ? 'Student Name' : 'Company Name'}
+                </Form.Label>
+                <Form.Control type="text" ref={userNameRef} required />
+              </Form.Group>
+              <Form.Group id="email">
+                <Form.Label>Email</Form.Label>
+                <Form.Control type="email" ref={emailRef} required />
+              </Form.Group>
+              <Form.Group id="password">
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password" ref={passwordRef} required />
+              </Form.Group>
+              <Form.Group id="password-confirm">
+                <Form.Label>Password Confirmation</Form.Label>
+                <Form.Control type="password" ref={passwordConfirmRef} required />
+              </Form.Group>
+              <Button disabled={loading} className="w-100 mt-4 mb-4" type="submit">
+                Sign Up
+              </Button>
+            </Form>
+          </Card.Body>
+          <div className=" text-center d-flex" style={{ marginBottom: '-32px' }}>
+            Already have an account? <Link to="/login">Log In</Link>
+          </div>
+        </Card>
+      </div>
+    </>
   );
 }

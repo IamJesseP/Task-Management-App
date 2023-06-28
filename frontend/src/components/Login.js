@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Form, Button, Card, Alert } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
-import HomeNav from './HomeNav';
+import '../home.css';
 
 export default function Login() {
   // useRef is used to access the value of the input fields without constant re-renders
@@ -21,7 +21,7 @@ export default function Login() {
       setError('');
       setLoading(true);
       await login(emailRef.current.value, passwordRef.current.value);
-      navigate('/');
+      navigate('/dashboard');
     } catch (error) {
       setError('Failed to log in');
     }
@@ -31,7 +31,11 @@ export default function Login() {
 
   return (
     <>
-      <HomeNav />
+      <nav className="home-nav">
+        <Link to="/" className="nav-item-left">
+          Tech Incubator
+        </Link>
+      </nav>
       <div
         className="d-flex align-items-center justify-content-center"
         style={{

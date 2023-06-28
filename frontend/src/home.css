@@ -9,6 +9,7 @@
     position: sticky;
     top: 0;
     z-index: 100;
+    height: 100px;
              
   }
 
@@ -32,11 +33,11 @@
   }
   .nav-item-button {
     padding: 8px 16px;
-    background-color: white;
+    background-color: #393a3b;
     border-radius: 18px;
     font-size: 20px;
     border: #0d6efd;
-    color: black;
+    color: whitesmoke;
     margin: 0px;
     font-size: 18px;
     box-shadow: 1px 0px 2px 
@@ -202,10 +203,9 @@
     
 }
 
+/*  Features */
 
-/*  Our Focus */
-
-.home-focus{
+.home-features{
     display: flex;
     height: 90vh;
     max-height: 800px;
@@ -214,6 +214,51 @@
     min-width: 640px;
     margin: auto;
     margin-top: 80px;
-    background-color: #0d6dfdaf;
     border-radius: 3px;
+    flex-direction: column;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
+
+.features-summary{
+    display: flex;
+    flex-direction: row;
+    height: 60%;
+}
+
+.features-section-1{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 20px 20px;
+    width: 50%;
+    height: 100%;
+    border-radius: 25px;
+    background-color: #cad1da;
+    
+}
+.features-section-2{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 20px 20px;
+    width: 50%;
+    height: 100%;
+    border-radius: 25px;
+    color: whitesmoke;
+    background-color:#000000c0;
+}
+
+.features-section-1 > h3, .features-section-2 > h3{
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    text-align: left;
+    font-size:2.5rem;
+    line-height: 1;
+    align-self: center;
+}
+
+.features-section-1 > ul, .features-section-2 > ul {
+    margin: 25px auto;
+    max-width: 385px;
+    font-size: 1.25rem;
+    line-height: 2;
 }

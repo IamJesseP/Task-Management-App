@@ -23,8 +23,8 @@ export default function Dashboard() {
       await currentUser.reload();
       const token = await currentUser.getIdToken(true);
       const response = await fetch(
-        // 'https://tech-incubator-task-api.herokuapp.com/dashboard/tasks',
-        'http://localhost:4000/dashboard/tasks',
+        'https://tech-incubator-task-api.herokuapp.com/dashboard/tasks',
+        // 'http://localhost:4000/dashboard/tasks',
         {
           method: 'GET',
           headers: {
@@ -210,8 +210,8 @@ function TaskDetailModal({ task, show, onHide, setRefreshTrigger }) {
     try {
       const token = await auth.currentUser.getIdToken(true);
       const response = await fetch(
-        // `https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/studentUpdate/${taskId}`,
-        `http://localhost:4000/tasks/studentUpdate/${taskId}`,
+        `https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/studentUpdate/${taskId}`,
+        // `http://localhost:4000/tasks/studentUpdate/${taskId}`,
         {
           method: 'PATCH',
           headers: {

@@ -33,8 +33,8 @@ export default function Dashboard() {
       const token = await currentUser.getIdToken(true);
 
       const response = await fetch(
-        // 'https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/showMyTasks',
-        'http://localhost:4000/dashboard/tasks/showMyTasks',
+        'https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/showMyTasks',
+        // 'http://localhost:4000/dashboard/tasks/showMyTasks',
         {
           method: 'GET',
           headers: {
@@ -59,8 +59,8 @@ export default function Dashboard() {
     try {
       const token = await auth.currentUser.getIdToken(true);
       const response = await fetch(
-        // `https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/studentUpdate/${taskId}`,
-        `http://localhost:4000/dashboard/tasks/studentUpdate/${taskId}`,
+        `https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/studentUpdate/${taskId}`,
+        // `http://localhost:4000/dashboard/tasks/studentUpdate/${taskId}`,
         {
           method: 'PATCH',
           headers: {

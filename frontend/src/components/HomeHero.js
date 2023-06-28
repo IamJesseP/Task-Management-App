@@ -2,10 +2,12 @@ import React from 'react';
 import '../home.css';
 import Arrow from './assets/Arrow1.png';
 import Arrow2 from './assets/Arrow2.png';
+import { Link as LinkScroll } from 'react-scroll';
+import { Link as LinkRouter } from 'react-router-dom';
 
 export default function HomeHero() {
   return (
-    <div className="home-hero">
+    <div className="home-hero" id="focus">
       <div className="hero-left-bubble">
         <div className="bubble-baby-1">
           <p>Become a company that leads</p>
@@ -15,16 +17,23 @@ export default function HomeHero() {
           </div>
         </div>
         <div className="hero-bottom-left">
-          <a href="#" className="bubble-baby-2">
-            <div className="bubble-baby-2">
+          <div className="bubble-baby-2">
+            <LinkRouter to="/login" className="bubble-baby-2">
               <p>Register Now</p>
               <img src={Arrow} className="arrow-1"></img>
-            </div>
-          </a>
-          <div className="bubble-baby-3">
-            <img src={Arrow2} className="arrow-2"></img>
-            <p>Learn more</p>
+            </LinkRouter>
           </div>
+          <LinkScroll
+            to="features"
+            smooth="true"
+            spy={true}
+            duration={800}
+            style={{ cursor: 'pointer' }}>
+            <div className="bubble-baby-3">
+              <img src={Arrow2} className="arrow-2"></img>
+              <p>Learn more</p>
+            </div>
+          </LinkScroll>
         </div>
       </div>
       <div className="hero-right-bubble">

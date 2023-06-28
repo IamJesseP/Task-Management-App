@@ -32,7 +32,9 @@ function Navibar() {
         <div className="header1">
           <div className="container-row2">
             <h2 className="text-center mb-0">
-              <span className="logo">Tech Incubator</span>
+              <Link to="/" style={{ textDecoration: 'none' }}>
+                <span className="logo">Tech Incubator</span>
+              </Link>
             </h2>
           </div>
           <ul className="navbar-nav flex-column my-1">

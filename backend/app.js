@@ -12,9 +12,8 @@ const xss = require("xss-clean");
 const cors = require("cors");
 const rateLimit = require('express-rate-limit');
 
-// origin: "https://task-management-app-nine-beryl.vercel.app", //  frontend domain
 var corsOptions = {
-  origin: '*',
+  origin: "https://task-management-app-nine-beryl.vercel.app", //  frontend domain
   optionsSuccessStatus: 200,
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],

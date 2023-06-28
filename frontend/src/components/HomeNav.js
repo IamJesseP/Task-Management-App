@@ -1,24 +1,41 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
+import React, { useEffect } from 'react';
 import '../home.css';
-import { Link } from 'react-router-dom';
-export default function HomeNav() {
+import { Link as LinkScroll } from 'react-scroll';
+import { Link as LinkRouter } from 'react-router-dom';
+
+export default function HomeNav(path) {
   return (
     <nav className="home-nav">
-      <Link to="/home" className="nav-item-left">
+      <LinkRouter to="/" className="nav-item-left">
         Tech Incubator
-      </Link>
+      </LinkRouter>
       <div>
-        <a href="#" className="nav-item">
+        <LinkScroll
+          to="focus"
+          className="nav-item"
+          spy={true}
+          duration={800}
+          smooth={true}
+          offset={-80}
+          style={{ cursor: 'pointer' }}>
           Our Focus
-        </a>
-        <a href="#" className="nav-item">
+        </LinkScroll>
+        <LinkScroll
+          to="features"
+          className="nav-item"
+          spy={true}
+          duration={800}
+          smooth={true}
+          offset={-80}
+          style={{ cursor: 'pointer' }}>
           Key Features
-        </a>
+        </LinkScroll>
       </div>
       <div className="nav-items-right">
-        <Link to="/login" className="nav-item">
+        <LinkRouter to="/dashboard" className="nav-item">
           <button className="nav-item nav-item-button">Dashboard</button>
-        </Link>
+        </LinkRouter>
       </div>
     </nav>
   );
