@@ -7,32 +7,32 @@ import Login from './Login';
 import PrivateRoute from './PrivateRoute';
 import ForgotPassword from './ForgotPassword';
 import MyTasks from './MyTasks';
+import Home from './Home';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <AuthProvider>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <PrivateRoute>
-                  <Dashboard />
-                </PrivateRoute>
-              }></Route>
-            <Route
-              path="/my-tasks"
-              element={
-                <PrivateRoute>
-                  <MyTasks />
-                </PrivateRoute>
-              }></Route>
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-          </Routes>
-        </AuthProvider>
+        <Routes>
+          <Route path="/home" element={<Home />}></Route>
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }></Route>
+          <Route
+            path="/my-tasks"
+            element={
+              <PrivateRoute>
+                <MyTasks />
+              </PrivateRoute>
+            }></Route>
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+        </Routes>
       </Router>
     </AuthProvider>
   );
