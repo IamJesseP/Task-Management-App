@@ -35,7 +35,7 @@ export default function Dashboard() {
       );
       const data = await response.json();
       await currentUser.reload();
-      navigate('/');
+      navigate('/dashboard');
       setTasks(data);
     } catch (error) {
       console.error('Error fetching tasks:', error);
