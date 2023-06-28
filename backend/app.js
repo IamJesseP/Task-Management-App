@@ -10,19 +10,24 @@ const admin = require("./db/firebaseAdmin");
 const helmet = require("helmet");
 const xss = require("xss-clean");
 const cors = require("cors");
-const expresLimiter = require('express-rate-limit');
+const rateLimit = require('express-rate-limit');
 
+// origin: "https://task-management-app-nine-beryl.vercel.app", //  frontend domain
 var corsOptions = {
-  origin: "https://task-management-app-nine-beryl.vercel.app", //  frontend domain
+  origin: '*',
   optionsSuccessStatus: 200,
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 };
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100
+});
 
 app.use(cors(corsOptions));
 app.use(helmet());
 app.use(xss());
-app.use(expresLimiter())
+app.use(limiter)
 
 app.use(express.json());
 app.use(express.static("./public"));

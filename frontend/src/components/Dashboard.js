@@ -23,7 +23,8 @@ export default function Dashboard() {
       await currentUser.reload();
       const token = await currentUser.getIdToken(true);
       const response = await fetch(
-        'https://tech-incubator-task-api.herokuapp.com/dashboard/tasks',
+        // 'https://tech-incubator-task-api.herokuapp.com/dashboard/tasks',
+        'http://localhost:4000/dashboard/tasks',
         {
           method: 'GET',
           headers: {
@@ -60,12 +61,8 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="d-flex">
-      {toggle && (
-        <div className="nav">
-          <Navibar className="navbar" />
-        </div>
-      )}
+    <div className="d-flex tasks">
+      {toggle && <Navibar className="navbar" />}
       <div className="content">
         <ToggleButton
           variant="primary"
@@ -120,48 +117,50 @@ export default function Dashboard() {
             </ToggleButtonGroup>
           </div>
         </div>
-        <div className="card-columns">
-          {filterTasks === 'all' &&
-            tasks.map((task) => (
-              <TaskCard
-                key={task.id}
-                task={task}
-                handleOpenModal={handleOpenModal}
-                profilePhoto={userPhotoURL}
+        <div className="card-container">
+          <div className="card-columns">
+            {filterTasks === 'all' &&
+              tasks.map((task) => (
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  handleOpenModal={handleOpenModal}
+                  profilePhoto={userPhotoURL}
+                />
+              ))}
+            {filterTasks === 'open' &&
+              tasks.map(
+                (task) =>
+                  !task.student && (
+                    <TaskCard
+                      key={task.id}
+                      task={task}
+                      handleOpenModal={handleOpenModal}
+                      profilePhoto={userPhotoURL}
+                    />
+                  )
+              )}
+            {filterTasks === 'claimed' &&
+              tasks.map(
+                (task) =>
+                  task.student && (
+                    <TaskCard
+                      key={task.id}
+                      task={task}
+                      handleOpenModal={handleOpenModal}
+                      profilePhoto={userPhotoURL}
+                    />
+                  )
+              )}
+            {isModalOpen && selectedTask && (
+              <TaskDetailModal
+                task={selectedTask}
+                show={isModalOpen}
+                onHide={handleCloseModal}
+                setRefreshTrigger={setRefreshTrigger}
               />
-            ))}
-          {filterTasks === 'open' &&
-            tasks.map(
-              (task) =>
-                !task.student && (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    handleOpenModal={handleOpenModal}
-                    profilePhoto={userPhotoURL}
-                  />
-                )
             )}
-          {filterTasks === 'claimed' &&
-            tasks.map(
-              (task) =>
-                task.student && (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    handleOpenModal={handleOpenModal}
-                    profilePhoto={userPhotoURL}
-                  />
-                )
-            )}
-          {isModalOpen && selectedTask && (
-            <TaskDetailModal
-              task={selectedTask}
-              show={isModalOpen}
-              onHide={handleCloseModal}
-              setRefreshTrigger={setRefreshTrigger}
-            />
-          )}
+          </div>
         </div>
       </div>
     </div>
@@ -211,7 +210,8 @@ function TaskDetailModal({ task, show, onHide, setRefreshTrigger }) {
     try {
       const token = await auth.currentUser.getIdToken(true);
       const response = await fetch(
-        `https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/studentUpdate/${taskId}`,
+        // `https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/studentUpdate/${taskId}`,
+        `http://localhost:4000/tasks/studentUpdate/${taskId}`,
         {
           method: 'PATCH',
           headers: {

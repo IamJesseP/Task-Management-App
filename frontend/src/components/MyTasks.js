@@ -33,7 +33,8 @@ export default function Dashboard() {
       const token = await currentUser.getIdToken(true);
 
       const response = await fetch(
-        'https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/showMyTasks',
+        // 'https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/showMyTasks',
+        'http://localhost:4000/dashboard/tasks/showMyTasks',
         {
           method: 'GET',
           headers: {
@@ -58,7 +59,8 @@ export default function Dashboard() {
     try {
       const token = await auth.currentUser.getIdToken(true);
       const response = await fetch(
-        `https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/studentUpdate/${taskId}`,
+        // `https://tech-incubator-task-api.herokuapp.com/dashboard/tasks/studentUpdate/${taskId}`,
+        `http://localhost:4000/dashboard/tasks/studentUpdate/${taskId}`,
         {
           method: 'PATCH',
           headers: {
@@ -99,7 +101,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="d-flex">
+    <div className="d-flex tasks">
       {toggle && (
         <div className="nav">
           <Navibar className="navbar" />
@@ -133,23 +135,25 @@ export default function Dashboard() {
           <h2 className="text-center mb-2">My Tasks</h2>
           {currentName.startsWith('company') && <TaskCreateModal fetchTasks={fetchTasks} />}
         </div>
-        <div className="card-columns">
-          {tasks.map((task) => (
-            <TaskCard
-              key={task.id}
-              task={task}
-              handleOpenModal={handleOpenModal}
-              profilePhoto={userPhotoURL}
-            />
-          ))}
-          {isModalOpen && selectedTask && (
-            <TaskDetailModal
-              task={selectedTask}
-              show={isModalOpen}
-              handleTaskUpdate={handleTaskUpdate}
-              onHide={handleCloseModal}
-            />
-          )}
+        <div className="card-container">
+          <div className="card-columns">
+            {tasks.map((task) => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                handleOpenModal={handleOpenModal}
+                profilePhoto={userPhotoURL}
+              />
+            ))}
+            {isModalOpen && selectedTask && (
+              <TaskDetailModal
+                task={selectedTask}
+                show={isModalOpen}
+                handleTaskUpdate={handleTaskUpdate}
+                onHide={handleCloseModal}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>

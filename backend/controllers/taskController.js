@@ -152,7 +152,6 @@ const updateCompanyTask = async (req, res) => {
       await taskRef.update({
         title,
         description,
-        
       });
       const task = await taskRef.get();
       if (!task.exists) {

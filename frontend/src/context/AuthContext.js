@@ -40,7 +40,6 @@ export function AuthProvider({ children }) {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         setCurrentName(user.displayName ? user.displayName : user.email);
-        console.log(user.photoURL);
         setUserPhotoURL(user.photoURL);
       }
       setCurrentUser(user);

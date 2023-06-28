@@ -4,6 +4,7 @@ html, body, #root, .container {
   height: 100%;
   width: 100%;
   background: #E8EBF0;
+  
 
 }
 
@@ -15,7 +16,7 @@ html, body, #root, .container {
 .navbar {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   width: 300px;
   background-color: #ffffff;
   z-index: 100;
@@ -24,7 +25,7 @@ html, body, #root, .container {
   
 }
 
-.navbar-vertical {
+.navbar {
   background-color: white;
   border: 1px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -42,7 +43,9 @@ html, body, #root, .container {
 .account {
   float: bottom;
 }
-
+.tasks{
+  height: 100%;
+}
 .container-row {
   height: 100%;
   /* width: 100%; */
@@ -68,13 +71,18 @@ html, body, #root, .container {
   grid-gap: 1rem;
   justify-content: center;
   padding: 16px;
+  overflow-x: scroll;
 }
-
+.card-container{
+  max-height: 800px;
+  overflow-y: scroll;
+}
 .card {
   background: #ffffff;
   border-color: none !important;
   cursor: pointer;
   box-shadow: 3px 3px 5px #cacaca, -3px -3px 5px #f6f6f6;
+  height: 500px;
 }
 
 .card2:hover {
