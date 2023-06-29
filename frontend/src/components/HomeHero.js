@@ -18,7 +18,7 @@ export default function HomeHero() {
         </div>
         <div className="hero-bottom-left">
           <div className="bubble-baby-2">
-            <LinkRouter to="/login" className="bubble-baby-2">
+            <LinkRouter to="/signup" className="bubble-baby-2">
               <p>Register Now</p>
               <img src={Arrow} className="arrow-1"></img>
             </LinkRouter>
